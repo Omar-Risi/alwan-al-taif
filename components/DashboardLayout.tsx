@@ -3,7 +3,7 @@
 import { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Newspaper, LogOut, Menu, X } from 'lucide-react';
+import { Home, Newspaper, LogOut, Menu, X, Image } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DashboardLayoutProps {
@@ -17,6 +17,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const navItems = [
     { name: 'الرئيسية', href: '/dashboard', icon: Home },
     { name: 'الأخبار', href: '/dashboard/news', icon: Newspaper },
+    { name: 'المعرض', href: '/dashboard/gallery', icon: Image },
   ];
 
   const sidebarVariants = {
