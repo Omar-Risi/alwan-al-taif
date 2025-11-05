@@ -3,7 +3,6 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import DashboardLayout from '@/components/DashboardLayout';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
 
@@ -187,40 +186,35 @@ export default function EditNewsPage() {
 
   if (fetching) {
     return (
-      <DashboardLayout>
-        <div className="p-8">
-          <p>جاري التحميل...</p>
-        </div>
-      </DashboardLayout>
+      <div className="p-8">
+        <p>جاري التحميل...</p>
+      </div>
     );
   }
 
   // Show error if news not found
   if (error && !formData.title_ar) {
     return (
-      <DashboardLayout>
-        <div className="p-8">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-            <h2 className="text-xl font-bold text-red-800 mb-2">خطأ</h2>
-            <p className="text-red-600 mb-4">{error}</p>
-            <p className="text-sm text-gray-600 mb-4">
-              هذا الخبر غير موجود في قاعدة البيانات. ربما تم حذفه أو لم يتم حفظه بشكل صحيح.
-            </p>
-            <Link
-              href="/dashboard/news"
-              className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
-            >
-              العودة لقائمة الأخبار
-            </Link>
-          </div>
+      <div className="p-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <h2 className="text-xl font-bold text-red-800 mb-2">خطأ</h2>
+          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-sm text-gray-600 mb-4">
+            هذا الخبر غير موجود في قاعدة البيانات. ربما تم حذفه أو لم يتم حفظه بشكل صحيح.
+          </p>
+          <Link
+            href="/dashboard/news"
+            className="inline-block px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+          >
+            العودة لقائمة الأخبار
+          </Link>
         </div>
-      </DashboardLayout>
+      </div>
     );
   }
 
   return (
-    <DashboardLayout>
-      <div className="p-8">
+    <div className="p-4 md:p-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">تعديل الخبر</h1>
           <Link
@@ -431,6 +425,5 @@ export default function EditNewsPage() {
           </form>
         </div>
       </div>
-    </DashboardLayout>
   );
 }

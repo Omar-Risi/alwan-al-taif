@@ -3,7 +3,6 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import DashboardLayout from '@/components/DashboardLayout';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
 
@@ -116,8 +115,7 @@ export default function CreateNewsPage() {
   }
 
   return (
-    <DashboardLayout>
-      <div className="p-8">
+    <div className="p-4 md:p-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">إضافة خبر جديد</h1>
           <Link
@@ -332,6 +330,5 @@ export default function CreateNewsPage() {
           </form>
         </div>
       </div>
-    </DashboardLayout>
   );
 }
