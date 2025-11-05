@@ -1,14 +1,22 @@
 import { cookies } from 'next/headers';
-import { verifyToken } from './jwt';
+import { createClient } from '@supabase/supabase-js';
 
 export async function getCurrentUser() {
   const cookieStore = await cookies();
-  const token = cookieStore.get('token')?.value;
+  const accessToken = cookieStore.get('sb-access-token')?.value;
 
-  if (!token) return null;
+  if (!accessToken) return null;
 
-  const payload = verifyToken(token);
-  return payload;
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { data: { user }, error } = await supabase.auth.getUser(accessToken);
+
+  if (error || !user) return null;
+
+  return user;
 }
 
 export async function requireAuth() {
