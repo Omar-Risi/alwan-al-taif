@@ -3,6 +3,7 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 import { ConditionalNav } from "@/components/ConditionalNav";
 import { ConditionalMain } from "@/components/ConditionalMain";
+import { ConditionalFooter } from "@/components/ConditionalFooter";
 
 export const metadata: Metadata = {
   title: "Rainbow School | مدرسة الوان الطيف",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <ConditionalMain>
           {children}
         </ConditionalMain>
+        <ConditionalFooter />
       </body>
     </html>
   );
