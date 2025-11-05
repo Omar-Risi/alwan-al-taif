@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import DashboardLayout from '@/components/DashboardLayout';
+import { motion } from 'framer-motion';
 import ConfirmDialog from '@/components/ConfirmDialog';
 
 interface News {
@@ -75,121 +75,207 @@ export default function NewsManagementPage() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="p-8">
-          <p>جاري التحميل...</p>
-        </div>
-      </DashboardLayout>
+      <div className="p-8">
+        <p>جاري التحميل...</p>
+      </div>
     );
   }
 
   return (
-    <DashboardLayout>
-      <div className="p-8">
-        <div className="flex justify-between items-center mb-6">
+    <div className="p-4 md:p-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
+        >
           <h2 className="text-2xl font-bold">إدارة الأخبار</h2>
           <Link
             href="/dashboard/news/create"
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all hover:scale-105"
           >
             <Plus className="w-5 h-5" />
-            إضافة خبر جديد
+            <span className="hidden sm:inline">إضافة خبر جديد</span>
+            <span className="sm:hidden">إضافة</span>
           </Link>
-        </div>
+        </motion.div>
 
         {news.length === 0 ? (
-          <div className="bg-white/50 backdrop-blur rounded-lg shadow p-8 text-center border border-primary/20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white/50 backdrop-blur rounded-lg shadow p-8 text-center border border-primary/20"
+          >
             <p className="text-gray-500">لا توجد أخبار حتى الآن</p>
-          </div>
+          </motion.div>
         ) : (
-          <div className="bg-white/50 backdrop-blur rounded-lg shadow overflow-hidden border border-primary/20">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-primary/10">
-                <tr>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                    العنوان (عربي)
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                    العنوان (English)
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                    الحالة
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                    التاريخ
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                    الإجراءات
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {news.map((item) => (
-                  <tr key={item.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {item.title_ar}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {item.title_en}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          item.published
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
+          <>
+            {/* Desktop Table View */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="hidden md:block bg-white/50 backdrop-blur rounded-lg shadow overflow-hidden border border-primary/20"
+            >
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-primary/10">
+                    <tr>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
+                        العنوان (عربي)
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
+                        العنوان (English)
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
+                        الحالة
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
+                        التاريخ
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
+                        الإجراءات
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {news.map((item, index) => (
+                      <motion.tr
+                        key={item.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="hover:bg-primary/5 transition-colors"
                       >
-                        {item.published ? 'منشور' : 'مسودة'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {new Date(item.created_at).toLocaleDateString('ar-SA')}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => router.push(`/news/${item.id}`)}
-                          className="text-green-600 hover:text-green-900"
-                          title="معاينة"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => router.push(`/dashboard/news/edit/${item.id}`)}
-                          className="text-blue-600 hover:text-blue-900"
-                          title="تعديل"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => openDeleteDialog(item)}
-                          className="text-red-600 hover:text-red-900"
-                          title="حذف"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                          {item.title_ar}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {item.title_en}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${
+                              item.published
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {item.published ? 'منشور' : 'مسودة'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          {new Date(item.created_at).toLocaleDateString('ar-SA')}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex gap-2">
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => router.push(`/news/${item.id}`)}
+                              className="text-green-600 hover:text-green-900"
+                              title="معاينة"
+                            >
+                              <Eye className="w-5 h-5" />
+                            </motion.button>
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => router.push(`/dashboard/news/edit/${item.id}`)}
+                              className="text-blue-600 hover:text-blue-900"
+                              title="تعديل"
+                            >
+                              <Edit className="w-5 h-5" />
+                            </motion.button>
+                            <motion.button
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => openDeleteDialog(item)}
+                              className="text-red-600 hover:text-red-900"
+                              title="حذف"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </motion.button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
 
-      {/* Delete Confirmation Dialog */}
-      <ConfirmDialog
-        isOpen={deleteDialogOpen}
-        onClose={closeDeleteDialog}
-        onConfirm={confirmDelete}
-        title="تأكيد الحذف"
-        message={`هل أنت متأكد من حذف الخبر "${newsToDelete?.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.`}
-        confirmText="حذف"
-        cancelText="إلغاء"
-        isLoading={deleting}
-      />
-    </DashboardLayout>
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {news.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white/50 backdrop-blur rounded-lg shadow p-4 border border-primary/20"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-gray-900 mb-1">{item.title_ar}</h3>
+                      <p className="text-sm text-gray-600">{item.title_en}</p>
+                    </div>
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full whitespace-nowrap ${
+                        item.published
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {item.published ? 'منشور' : 'مسودة'}
+                    </span>
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 mb-3">
+                    {new Date(item.created_at).toLocaleDateString('ar-SA')}
+                  </p>
+
+                  <div className="flex gap-2 justify-end">
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => router.push(`/news/${item.id}`)}
+                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      title="معاينة"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </motion.button>
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => router.push(`/dashboard/news/edit/${item.id}`)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="تعديل"
+                    >
+                      <Edit className="w-5 h-5" />
+                    </motion.button>
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => openDeleteDialog(item)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="حذف"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Delete Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={deleteDialogOpen}
+          onClose={closeDeleteDialog}
+          onConfirm={confirmDelete}
+          title="تأكيد الحذف"
+          message={`هل أنت متأكد من حذف الخبر "${newsToDelete?.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.`}
+          confirmText="حذف"
+          cancelText="إلغاء"
+          isLoading={deleting}
+        />
+      </div>
   );
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
-import { NavigationBar } from "@/components/NavigationBar";
+import { ConditionalNav } from "@/components/ConditionalNav";
+import { ConditionalMain } from "@/components/ConditionalMain";
 
 export const metadata: Metadata = {
   title: "Rainbow School | مدرسة الوان الطيف",
@@ -22,11 +23,10 @@ export default function RootLayout({
       <body
         className={`${cairo.className} antialiased bg-background`}
       >
-
-        <NavigationBar />
-        <main className="px-8 py-4 lg:px-24 w-full">
+        <ConditionalNav />
+        <ConditionalMain>
           {children}
-        </main>
+        </ConditionalMain>
       </body>
     </html>
   );
