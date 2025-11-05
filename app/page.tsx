@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, LucideIcon, Pen, Phone } from "lucide-react";
 import Link from "next/link";
+import NewsSection from "@/components/NewsSection";
 
 
 const quickLinks: { name?: string, icon?: LucideIcon, href?: string }[] = [
@@ -69,7 +70,7 @@ export default function Home() {
             const Icon = link.icon
 
             return (
-              <div className="bg-white rounded-md p-4 aspect-sqare shadow-md">
+              <div key={link.name} className="bg-white rounded-md p-4 aspect-sqare shadow-md">
                 <div className="bg-primary/25 p-2 rounded w-fit">
                   <Icon className="text-primary" />
                 </div>
@@ -87,6 +88,8 @@ export default function Home() {
         </div>
 
       </motion.section>
+
+      <NewsSection />
 
     </>
   );

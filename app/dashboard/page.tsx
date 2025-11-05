@@ -1,38 +1,30 @@
 import { requireAuth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import DashboardLayout from '@/components/DashboardLayout';
 
 export default async function DashboardPage() {
   try {
     const user = await requireAuth();
 
     return (
-      <div className="min-h-screen bg-gray-50">
-        <nav className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16 items-center">
-              <h1 className="text-xl font-bold">Dashboard</h1>
-              <form action="/api/logout" method="POST">
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
-                >
-                  Logout
-                </button>
-              </form>
-            </div>
+      <DashboardLayout>
+        <div className="p-8">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">مرحباً بك في لوحة التحكم</h2>
+            <p className="text-gray-600">تم تسجيل الدخول بواسطة: <strong>{user.email}</strong></p>
           </div>
-        </nav>
 
-        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 p-8">
-              <h2 className="text-2xl font-bold mb-4">Welcome to Dashboard!</h2>
-              <p className="text-gray-600">You are logged in as: <strong>{user.email}</strong></p>
-              <p className="text-gray-600 mt-2">User ID: {user.id}</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a
+              href="/dashboard/news"
+              className="block p-6 bg-white/50 backdrop-blur rounded-lg shadow hover:shadow-lg transition-shadow border border-primary/20"
+            >
+              <h3 className="text-xl font-bold text-primary mb-2">إدارة الأخبار</h3>
+              <p className="text-gray-600">إضافة وتعديل وحذف الأخبار</p>
+            </a>
           </div>
-        </main>
-      </div>
+        </div>
+      </DashboardLayout>
     );
   } catch {
     redirect('/login');
