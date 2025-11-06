@@ -3,7 +3,7 @@
 import { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Newspaper, LogOut, Menu, X, Image } from 'lucide-react';
+import { Home, Newspaper, LogOut, Menu, X, Image, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DashboardLayoutProps {
@@ -18,6 +18,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: 'الرئيسية', href: '/dashboard', icon: Home },
     { name: 'الأخبار', href: '/dashboard/news', icon: Newspaper },
     { name: 'المعرض', href: '/dashboard/gallery', icon: Image },
+    { name: 'طلبات التسجيل', href: '/dashboard/applications', icon: FileText },
   ];
 
   const sidebarVariants = {
@@ -71,7 +72,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <nav className="px-4 space-y-2 flex-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            const isActive = item.href === '/dashboard' 
+              ? pathname === '/dashboard'
+              : pathname.startsWith(item.href);
             
             return (
               <motion.div
@@ -134,7 +137,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <nav className="px-4 space-y-2 flex-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            const isActive = item.href === '/dashboard' 
+              ? pathname === '/dashboard'
+              : pathname.startsWith(item.href);
             
             return (
               <motion.div

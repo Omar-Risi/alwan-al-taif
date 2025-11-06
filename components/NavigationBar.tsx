@@ -12,7 +12,7 @@ export function NavigationBar() {
 
   const menuItems = [
     { href: "/about", label: "من نحن" },
-    { href: "/adimission", label: "التسجيل" },
+    { href: "/admission", label: "التسجيل" },
     { href: "/news", label: "الأخبار" },
     { href: "/gallery", label: "معرض الصور" },
     { href: "/contact", label: "تواصل معنا" },
