@@ -1,149 +1,221 @@
-'use client';
+"use client"
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { Calendar, ArrowLeft, Share2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-interface News {
+interface NewsArticle {
   id: string;
-  title_ar: string;
-  title_en: string;
-  content_ar: string;
-  content_en: string;
-  images: string[];
+  title: string;
+  content: string;
+  image_url: string;
   published: boolean;
   created_at: string;
 }
 
-export default function NewsDetailPage() {
+export default function NewsArticlePage() {
+  const { t } = useTranslation();
   const params = useParams();
-  const router = useRouter();
-  const [news, setNews] = useState<News | null>(null);
+  const [article, setArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([]);
 
   useEffect(() => {
-    async function fetchNews() {
-      try {
-        const res = await fetch(`/api/news/${params.id}`);
-        if (!res.ok) {
-          router.push('/');
-          return;
-        }
-        const data = await res.json();
-        setNews(data.news);
-      } catch (error) {
-        console.error('Error fetching news:', error);
-        router.push('/');
-      } finally {
-        setLoading(false);
-      }
-    }
-
     if (params.id) {
-      fetchNews();
+      fetchArticle(params.id as string);
+      fetchRelatedNews(params.id as string);
     }
-  }, [params.id, router]);
+  }, [params.id]);
 
-  const nextImage = () => {
-    if (news && news.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev + 1) % news.images.length);
+  const fetchArticle = async (id: string) => {
+    try {
+      const response = await fetch(`/api/news/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setArticle(data);
+      }
+    } catch (error) {
+      console.error('Error fetching article:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const prevImage = () => {
-    if (news && news.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev - 1 + news.images.length) % news.images.length);
+  const fetchRelatedNews = async (currentId: string) => {
+    try {
+      const response = await fetch('/api/news');
+      if (response.ok) {
+        const data = await response.json();
+        const filtered = data
+          .filter((item: NewsArticle) => item.published && item.id !== currentId)
+          .slice(0, 3);
+        setRelatedNews(filtered);
+      }
+    } catch (error) {
+      console.error('Error fetching related news:', error);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const handleShare = async () => {
+    if (navigator.share && article) {
+      try {
+        await navigator.share({
+          title: article.title,
+          text: article.content.substring(0, 100),
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('تم نسخ الرابط');
     }
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-500">جاري التحميل...</p>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg">{t('loading')}</p>
+        </div>
       </div>
     );
   }
 
-  if (!news) {
-    return null;
+  if (!article) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">الخبر غير موجود</h2>
+          <Link
+            href="/news"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>العودة إلى الأخبار</span>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <button
-          onClick={() => router.push('/')}
-          className="mb-6 text-primary hover:underline flex items-center gap-2"
+    <div className="min-h-screen py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Back Button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8"
         >
-          ← العودة للرئيسية
-        </button>
+          <Link
+            href="/news"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>العودة إلى الأخبار</span>
+          </Link>
+        </motion.div>
 
-        <div className="bg-white/50 backdrop-blur rounded-lg shadow-lg overflow-hidden border border-primary/20">
-          {news.images && news.images.length > 0 && (
-            <div className="relative w-full h-96 bg-white/30">
-              <Image
-                src={news.images[currentImageIndex]}
-                alt={news.title_ar}
-                fill
-                className="object-contain"
-              />
-              
-              {news.images.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-colors"
-                    aria-label="الصورة السابقة"
-                  >
-                    <ChevronLeft className="w-6 h-6 text-primary" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-colors"
-                    aria-label="الصورة التالية"
-                  >
-                    <ChevronRight className="w-6 h-6 text-primary" />
-                  </button>
-                  
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                    {news.images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentImageIndex ? 'bg-primary' : 'bg-white/60'
-                        }`}
-                        aria-label={`الصورة ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+        {/* Article */}
+        <motion.article
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden"
+        >
+          {/* Featured Image */}
+          <div className="relative h-96 w-full">
+            <Image
+              src={article.image_url}
+              alt={article.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="p-8 md:p-12">
+            {/* Meta */}
+            <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
+              <div className="flex items-center gap-2 text-gray-500">
+                <Calendar className="w-5 h-5" />
+                <time className="text-sm">{formatDate(article.created_at)}</time>
+              </div>
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+              >
+                <Share2 className="w-5 h-5" />
+                <span className="text-sm font-semibold">مشاركة</span>
+              </button>
             </div>
-          )}
 
-          <div className="p-8">
-            <h1 className="text-3xl font-bold text-primary mb-4">
-              {news.title_ar}
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              {article.title}
             </h1>
-            
-            <p className="text-sm text-gray-500 mb-6">
-              {new Date(news.created_at).toLocaleDateString('ar-SA', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </p>
 
+            {/* Content */}
             <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-                {news.content_ar}
+              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                {article.content}
               </p>
             </div>
           </div>
-        </div>
+        </motion.article>
+
+        {/* Related News */}
+        {relatedNews.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-16"
+          >
+            <h2 className="text-2xl font-bold text-primary mb-8">أخبار ذات صلة</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedNews.map((relatedArticle) => (
+                <Link
+                  key={relatedArticle.id}
+                  href={`/news/${relatedArticle.id}`}
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
+                >
+                  <div className="relative h-40 w-full">
+                    <Image
+                      src={relatedArticle.image_url}
+                      alt={relatedArticle.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-bold text-gray-900 line-clamp-2 mb-2">
+                      {relatedArticle.title}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      {formatDate(relatedArticle.created_at)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );

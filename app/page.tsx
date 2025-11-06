@@ -3,32 +3,35 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, Pen, Phone, Eye, Target, Heart, Users, BookOpen, Sparkles, Award } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import NewsSection from "@/components/NewsSection";
 
 const quickLinks = [
   {
-    name: 'تواصل معنا',
+    nameKey: 'contact',
     icon: Phone,
     href: "/contact"
   },
   {
-    name: 'التقويم',
+    nameKey: 'calendar',
     icon: Calendar,
     href: "/calendar"
   },
   {
-    name: 'التسجيل',
+    nameKey: 'admission',
     icon: Pen,
     href: "/admission"
   },
 ]
 
 export default function Home() {
+  const { t } = useTranslation();
+  
   return (
     <>
       <motion.section
         initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         className="flex flex-col items-center  gap-4 justify-center py-8">
 
         <div className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-md ">
@@ -41,17 +44,18 @@ export default function Home() {
         </div>
 
         <h1 className="text-2xl font-bold text-primary">
-          مرحبًا بكم في مدرسة الوان الطيف
+          {t('welcome')}
         </h1>
       </motion.section>
 
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         className="flex flex-col items-center  gap-4 justify-center py-8 mt-24">
 
         <h1 className="text-2xl font-bold text-primary">
-          الروابط السريعة
+          {t('quickLinks')}
         </h1>
 
         <div className="flex flex-col lg:flex-row justify-center items-center gap-12 mt-8">
@@ -60,16 +64,16 @@ export default function Home() {
             const Icon = link.icon
 
             return (
-              <div key={link.name} className="bg-white rounded-md p-4 aspect-sqare shadow-md">
+              <div key={link.nameKey} className="bg-white rounded-md p-4 aspect-sqare shadow-md">
                 <div className="bg-primary/25 p-2 rounded w-fit">
                   <Icon className="text-primary" />
                 </div>
                 <p className="text-xl font-bold text-primary mt-4">
-                  {link.name}
+                  {t(link.nameKey)}
                 </p>
                 <button className="text-white bg-primary px-4 py-2 font-semibold rounded-md mt-4 hover:bg-white hover:text-primary transition-colors ">
                   <Link href={link.href}>
-                    الانتقال للصفحة
+                    {t('goToPage')}
                   </Link>
                 </button>
               </div>
@@ -83,12 +87,13 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         className="py-16 mt-24"
       >
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-12">
             <Eye className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">رؤية المدرسة</h2>
+            <h2 className="text-3xl font-bold text-primary text-center">{t('vision')}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <motion.div
@@ -115,7 +120,7 @@ export default function Home() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  تلتزم مدرسة ألوان الطيف الخاصة بتوفير بيئة تعليمية لديها القدرة على جذب الطلاب لبناء الشخصية السوية المتميزة التي تمكنهم من توجيه وتوظيف الإمكانيات لتحقيق طموحاتهم.
+                  {t('visionText')}
                 </p>
               </div>
             </motion.div>
@@ -127,12 +132,13 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         className="py-16 mt-12 bg-primary/5"
       >
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-12">
             <BookOpen className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">رسالة المدرسة</h2>
+            <h2 className="text-3xl font-bold text-primary text-center">{t('mission')}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <motion.div
@@ -147,7 +153,7 @@ export default function Home() {
                     <Users className="w-6 h-6 text-primary" />
                   </div>
                   <p className="text-lg text-gray-700 leading-relaxed">
-                    فتح باب الحرية للطلاب والبحث الذاتي وإعطاء دور كبير للإنماء المهني وذلك لتطوير كفاءة المعلمين وذلك من خلال توفير عمل أكبر من محسنات التعليم باستخدام:
+                    {t('missionText')}
                   </p>
                 </div>
               </div>
@@ -156,10 +162,10 @@ export default function Home() {
                   <div className="bg-primary/20 p-2 rounded-lg">
                     <Award className="w-5 h-5 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold text-primary">ورش عمل</h3>
+                  <h3 className="text-xl font-bold text-primary">{t('workshops')}</h3>
                 </div>
                 <p className="text-gray-600">
-                  نقدم ورش عمل متخصصة لتطوير مهارات المعلمين وتحسين جودة التعليم المقدم للطلاب.
+                  {t('workshopsText')}
                 </p>
               </div>
             </motion.div>
@@ -184,12 +190,13 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         className="py-16 mt-12"
       >
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-12">
             <Target className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">أهداف المدرسة</h2>
+            <h2 className="text-3xl font-bold text-primary text-center">{t('goals')}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <motion.div
@@ -216,7 +223,7 @@ export default function Home() {
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  خلق بيئة مناسبة للنهوض بالطلاب علمياً وخلقياً ونفسياً لإعداد جيل سوي قادر على مواكبة التطور العلمي والتكنولوجي في مجتمعنا.
+                  {t('goalsText')}
                 </p>
               </div>
             </motion.div>
@@ -228,12 +235,13 @@ export default function Home() {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         className="py-16 mt-12 bg-primary/5"
       >
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-auto">
           <div className="flex items-center justify-center gap-3 mb-12">
             <Heart className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">القيم التي تلتزم بها المدرسة</h2>
+            <h2 className="text-3xl font-bold text-primary text-center">{t('valuesTitle')}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <motion.div
@@ -247,12 +255,9 @@ export default function Home() {
                   <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
                     <BookOpen className="w-6 h-6 text-primary" />
                   </div>
-                  <div>
-                    <span className="text-xl font-bold text-primary block mb-2">١.</span>
-                    <p className="text-gray-700 leading-relaxed">
-                      اتباع التوصيات والسياسات التربوية وأساليب التعليم المنبثقة من السياسات الحكومية وتحت إشراف وزارة التربية والتعليم بالسلطنة.
-                    </p>
-                  </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {t('value1')}
+                  </p>
                 </div>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all hover:translate-x-2">
@@ -260,12 +265,9 @@ export default function Home() {
                   <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
                     <Users className="w-6 h-6 text-primary" />
                   </div>
-                  <div>
-                    <span className="text-xl font-bold text-primary block mb-2">٢.</span>
-                    <p className="text-gray-700 leading-relaxed">
-                      تقدير الطفولة باعتبارها مختلفة عن البالغين وبما يتحقق لهم مبدأ الفروق الفردية.
-                    </p>
-                  </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {t('value2')}
+                  </p>
                 </div>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all hover:translate-x-2">
@@ -273,12 +275,9 @@ export default function Home() {
                   <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
                     <Sparkles className="w-6 h-6 text-primary" />
                   </div>
-                  <div>
-                    <span className="text-xl font-bold text-primary block mb-2">٣.</span>
-                    <p className="text-gray-700 leading-relaxed">
-                      تعزيز الثقة بالنفس والتفكير المستقل وقواعد السلوك القويم للتلاميذ.
-                    </p>
-                  </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {t('value3')}
+                  </p>
                 </div>
               </div>
             </motion.div>

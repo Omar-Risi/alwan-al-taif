@@ -4,19 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import LanguageToggle from "./LanguageToggle";
 
 export function NavigationBar() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const menuItems = [
-    { href: "/about", label: "من نحن" },
-    { href: "/admission", label: "التسجيل" },
-    { href: "/news", label: "الأخبار" },
-    { href: "/gallery", label: "معرض الصور" },
-    { href: "/contact", label: "تواصل معنا" },
+    { href: "/about", labelKey: "about" },
+    { href: "/admission", labelKey: "admission" },
+    { href: "/news", labelKey: "news" },
+    { href: "/gallery", labelKey: "gallery" },
+    { href: "/contact", labelKey: "contact" },
   ];
 
   const menuVariants = {
@@ -71,7 +73,7 @@ export function NavigationBar() {
             href={item.href}
             className="hover:bg-primary px-2 py-1 hover:text-white rounded-sm transition-colors"
           >
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         ))}
         <LanguageToggle />
@@ -136,7 +138,7 @@ export function NavigationBar() {
                     onClick={toggleMenu}
                     className="block text-lg font-semibold py-4 border-b border-gray-200 hover:text-primary transition-colors"
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 </motion.div>
               ))}
