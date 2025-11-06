@@ -1,10 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 export function Footer() {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,9 +19,9 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-xl font-bold text-primary mb-4">مدرسة ألوان الطيف</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">{t('footerSchoolName')}</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              مدرسة خاصة لتعليم الأطفال في المعبيلة الجنوبية، نقدم تعليماً متميزاً في بيئة آمنة ومحفزة.
+              {t('footerDescription')}
             </p>
           </motion.div>
 
@@ -29,26 +31,26 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h3 className="text-xl font-bold text-primary mb-4">روابط سريعة</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">{t('footerQuickLinks')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  الرئيسية
+                  {t('home')}
                 </Link>
               </li>
               <li>
                 <Link href="/admission" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  التسجيل
+                  {t('admission')}
                 </Link>
               </li>
               <li>
                 <Link href="/calendar" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  التقويم
+                  {t('calendar')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  تواصل معنا
+                  {t('contact')}
                 </Link>
               </li>
             </ul>
@@ -60,11 +62,11 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-xl font-bold text-primary mb-4">تواصل معنا</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">{t('footerContactUs')}</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-gray-600 text-sm">المعبيلة الجنوبية، سلطنة عمان</span>
+                <span className="text-gray-600 text-sm">{t('alMaabilah')}, {t('muscat')}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
@@ -87,7 +89,7 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="text-xl font-bold text-primary mb-4">تابعنا</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">{t('footerFollowUs')}</h3>
             <div className="flex gap-4">
               <a
                 href="https://instagram.com"
@@ -97,7 +99,6 @@ export function Footer() {
               >
                 <Instagram className="w-5 h-5" />
               </a>
-
             </div>
           </motion.div>
         </div>
@@ -110,7 +111,7 @@ export function Footer() {
           className="mt-8 pt-8 border-t border-primary/20 text-center"
         >
           <p className="text-gray-600 text-sm">
-            © {currentYear} مدرسة ألوان الطيف. جميع الحقوق محفوظة.
+            © {currentYear} {t('footerSchoolName')}. {t('footerRights')}
           </p>
         </motion.div>
       </div>

@@ -5,6 +5,7 @@ import { Plus, Edit, Trash2, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '@/components/ConfirmDialog';
 
 interface News {
@@ -19,6 +20,7 @@ interface News {
 }
 
 export default function NewsManagementPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,7 +78,7 @@ export default function NewsManagementPage() {
   if (loading) {
     return (
       <div className="p-8">
-        <p>جاري التحميل...</p>
+        <p>{t('loading')}</p>
       </div>
     );
   }
@@ -88,14 +90,14 @@ export default function NewsManagementPage() {
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
         >
-          <h2 className="text-2xl font-bold">إدارة الأخبار</h2>
+          <h2 className="text-2xl font-bold">{t('newsManagement')}</h2>
           <Link
             href="/dashboard/news/create"
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all hover:scale-105"
           >
             <Plus className="w-5 h-5" />
-            <span className="hidden sm:inline">إضافة خبر جديد</span>
-            <span className="sm:hidden">إضافة</span>
+            <span className="hidden sm:inline">{t('addNewNews')}</span>
+            <span className="sm:hidden">{t('addNews')}</span>
           </Link>
         </motion.div>
 
@@ -105,7 +107,7 @@ export default function NewsManagementPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white/50 backdrop-blur rounded-lg shadow p-8 text-center border border-primary/20"
           >
-            <p className="text-gray-500">لا توجد أخبار حتى الآن</p>
+            <p className="text-gray-500">{t('noNewsYetDashboard')}</p>
           </motion.div>
         ) : (
           <>
@@ -120,19 +122,19 @@ export default function NewsManagementPage() {
                   <thead className="bg-primary/10">
                     <tr>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                        العنوان (عربي)
+                        {t('titleArabic')}
                       </th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                        العنوان (English)
+                        {t('titleEnglish')}
                       </th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                        الحالة
+                        {t('status')}
                       </th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                        التاريخ
+                        {t('date')}
                       </th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">
-                        الإجراءات
+                        {t('actions')}
                       </th>
                     </tr>
                   </thead>
@@ -159,7 +161,7 @@ export default function NewsManagementPage() {
                                 : 'bg-gray-100 text-gray-800'
                             }`}
                           >
-                            {item.published ? 'منشور' : 'مسودة'}
+                            {item.published ? t('published') : t('draft')}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -172,7 +174,7 @@ export default function NewsManagementPage() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => router.push(`/news/${item.id}`)}
                               className="text-green-600 hover:text-green-900"
-                              title="معاينة"
+                              title={t('preview')}
                             >
                               <Eye className="w-5 h-5" />
                             </motion.button>
@@ -181,7 +183,7 @@ export default function NewsManagementPage() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => router.push(`/dashboard/news/edit/${item.id}`)}
                               className="text-blue-600 hover:text-blue-900"
-                              title="تعديل"
+                              title={t('edit')}
                             >
                               <Edit className="w-5 h-5" />
                             </motion.button>
@@ -190,7 +192,7 @@ export default function NewsManagementPage() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => openDeleteDialog(item)}
                               className="text-red-600 hover:text-red-900"
-                              title="حذف"
+                              title={t('delete')}
                             >
                               <Trash2 className="w-5 h-5" />
                             </motion.button>
@@ -225,7 +227,7 @@ export default function NewsManagementPage() {
                           : 'bg-gray-100 text-gray-800'
                       }`}
                     >
-                      {item.published ? 'منشور' : 'مسودة'}
+                      {item.published ? t('published') : t('draft')}
                     </span>
                   </div>
                   
@@ -238,7 +240,7 @@ export default function NewsManagementPage() {
                       whileTap={{ scale: 0.95 }}
                       onClick={() => router.push(`/news/${item.id}`)}
                       className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                      title="معاينة"
+                      title={t('preview')}
                     >
                       <Eye className="w-5 h-5" />
                     </motion.button>
@@ -246,7 +248,7 @@ export default function NewsManagementPage() {
                       whileTap={{ scale: 0.95 }}
                       onClick={() => router.push(`/dashboard/news/edit/${item.id}`)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="تعديل"
+                      title={t('edit')}
                     >
                       <Edit className="w-5 h-5" />
                     </motion.button>
@@ -254,7 +256,7 @@ export default function NewsManagementPage() {
                       whileTap={{ scale: 0.95 }}
                       onClick={() => openDeleteDialog(item)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="حذف"
+                      title={t('delete')}
                     >
                       <Trash2 className="w-5 h-5" />
                     </motion.button>
@@ -270,10 +272,10 @@ export default function NewsManagementPage() {
           isOpen={deleteDialogOpen}
           onClose={closeDeleteDialog}
           onConfirm={confirmDelete}
-          title="تأكيد الحذف"
-          message={`هل أنت متأكد من حذف الخبر "${newsToDelete?.title_ar}"؟ لا يمكن التراجع عن هذا الإجراء.`}
-          confirmText="حذف"
-          cancelText="إلغاء"
+          title={t('confirmDelete')}
+          message={`${t('deleteNewsMessage')} "${newsToDelete?.title_ar}"؟ ${t('cannotUndo')}`}
+          confirmText={t('delete')}
+          cancelText={t('cancel')}
           isLoading={deleting}
         />
       </div>

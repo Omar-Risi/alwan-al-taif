@@ -1,28 +1,36 @@
-import { createClient } from '@/lib/supabase-server';
+import { supabase } from '@/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = createClient();
-
+    const { id } = await context.params;
+    
+    console.log('Fetching news with ID:', id);
+    
     const { data, error } = await supabase
       .from('news')
       .select('*')
-      .eq('id', params.id)
-      .eq('published', true)
+      .eq('id', id)
       .single();
 
     if (error) {
+      console.error('Supabase error:', error);
       return NextResponse.json({ error: error.message }, { status: 404 });
     }
 
+    if (!data) {
+      return NextResponse.json({ error: 'News not found' }, { status: 404 });
+    }
+
+    console.log('News found:', data);
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (error: any) {
+    console.error('API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch news article' },
+      { error: error?.message || 'Failed to fetch news article' },
       { status: 500 }
     );
   }

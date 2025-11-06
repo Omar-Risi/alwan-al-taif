@@ -9,19 +9,23 @@ import { useTranslation } from "react-i18next";
 
 interface NewsArticle {
   id: string;
-  title: string;
-  content: string;
-  image_url: string;
+  title_ar: string;
+  title_en: string;
+  content_ar: string;
+  content_en: string;
+  images: string[];
   published: boolean;
   created_at: string;
 }
 
 export default function NewsArticlePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const params = useParams();
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([]);
+  
+  const isArabic = i18n.language === 'ar';
 
   useEffect(() => {
     if (params.id) {
@@ -49,7 +53,7 @@ export default function NewsArticlePage() {
       const response = await fetch('/api/news');
       if (response.ok) {
         const data = await response.json();
-        const filtered = data
+        const filtered = (data.news || [])
           .filter((item: NewsArticle) => item.published && item.id !== currentId)
           .slice(0, 3);
         setRelatedNews(filtered);
@@ -71,9 +75,11 @@ export default function NewsArticlePage() {
   const handleShare = async () => {
     if (navigator.share && article) {
       try {
+        const title = isArabic ? (article.title_ar || article.title_en) : (article.title_en || article.title_ar);
+        const content = isArabic ? (article.content_ar || article.content_en) : (article.content_en || article.content_ar);
         await navigator.share({
-          title: article.title,
-          text: article.content.substring(0, 100),
+          title: title,
+          text: content?.substring(0, 100) || '',
           url: window.location.href,
         });
       } catch (error) {
@@ -82,7 +88,7 @@ export default function NewsArticlePage() {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('تم نسخ الرابط');
+      alert(t('copied') || 'تم نسخ الرابط');
     }
   };
 
@@ -101,13 +107,13 @@ export default function NewsArticlePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-700 mb-4">الخبر غير موجود</h2>
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">{t('newsNotFound')}</h2>
           <Link
             href="/news"
             className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>العودة إلى الأخبار</span>
+            <span>{t('backToNews')}</span>
           </Link>
         </div>
       </div>
@@ -128,7 +134,7 @@ export default function NewsArticlePage() {
             className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>العودة إلى الأخبار</span>
+            <span>{t('backToNews')}</span>
           </Link>
         </motion.div>
 
@@ -139,14 +145,16 @@ export default function NewsArticlePage() {
           className="bg-white rounded-2xl shadow-lg overflow-hidden"
         >
           {/* Featured Image */}
-          <div className="relative h-96 w-full">
-            <Image
-              src={article.image_url}
-              alt={article.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+          {article.images && article.images.length > 0 && (
+            <div className="relative h-96 w-full">
+              <Image
+                src={article.images[0]}
+                alt={isArabic ? article.title_ar : article.title_en}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
 
           {/* Content */}
           <div className="p-8 md:p-12">
@@ -161,19 +169,19 @@ export default function NewsArticlePage() {
                 className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
               >
                 <Share2 className="w-5 h-5" />
-                <span className="text-sm font-semibold">مشاركة</span>
+                <span className="text-sm font-semibold">{t('share')}</span>
               </button>
             </div>
 
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              {article.title}
+              {isArabic ? (article.title_ar || article.title_en) : (article.title_en || article.title_ar)}
             </h1>
 
             {/* Content */}
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {article.content}
+                {isArabic ? (article.content_ar || article.content_en) : (article.content_en || article.content_ar)}
               </p>
             </div>
           </div>
@@ -187,7 +195,7 @@ export default function NewsArticlePage() {
             transition={{ delay: 0.2 }}
             className="mt-16"
           >
-            <h2 className="text-2xl font-bold text-primary mb-8">أخبار ذات صلة</h2>
+            <h2 className="text-2xl font-bold text-primary mb-8">{t('relatedNews')}</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {relatedNews.map((relatedArticle) => (
                 <Link
@@ -195,17 +203,19 @@ export default function NewsArticlePage() {
                   href={`/news/${relatedArticle.id}`}
                   className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
                 >
-                  <div className="relative h-40 w-full">
-                    <Image
-                      src={relatedArticle.image_url}
-                      alt={relatedArticle.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                  {relatedArticle.images && relatedArticle.images.length > 0 && (
+                    <div className="relative h-40 w-full">
+                      <Image
+                        src={relatedArticle.images[0]}
+                        alt={isArabic ? relatedArticle.title_ar : relatedArticle.title_en}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                   <div className="p-4">
                     <h3 className="font-bold text-gray-900 line-clamp-2 mb-2">
-                      {relatedArticle.title}
+                      {isArabic ? (relatedArticle.title_ar || relatedArticle.title_en) : (relatedArticle.title_en || relatedArticle.title_ar)}
                     </h3>
                     <p className="text-sm text-gray-500">
                       {formatDate(relatedArticle.created_at)}

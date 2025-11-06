@@ -8,15 +8,17 @@ import { useTranslation } from "react-i18next";
 
 interface NewsArticle {
   id: string;
-  title: string;
-  content: string;
-  image_url: string;
+  title_ar: string;
+  title_en: string;
+  content_ar: string;
+  content_en: string;
+  images: string[];
   published: boolean;
   created_at: string;
 }
 
 export default function NewsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +31,8 @@ export default function NewsPage() {
       const response = await fetch('/api/news');
       if (response.ok) {
         const data = await response.json();
-        setNews(data.filter((article: NewsArticle) => article.published));
+        const publishedNews = (data.news || []).filter((article: NewsArticle) => article.published);
+        setNews(publishedNews);
       }
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -51,6 +54,8 @@ export default function NewsPage() {
     if (content.length <= maxLength) return content;
     return content.substring(0, maxLength) + '...';
   };
+
+  const isArabic = i18n.language === 'ar';
 
   if (loading) {
     return (
@@ -104,15 +109,17 @@ export default function NewsPage() {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               >
                 {/* Image */}
-                <div className="relative h-56 w-full overflow-hidden">
-                  <Image
-                    src={article.image_url}
-                    alt={article.title}
-                    fill
-                    className="object-cover transition-transform duration-300 hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
+                {article.images && article.images.length > 0 && (
+                  <div className="relative h-56 w-full overflow-hidden">
+                    <Image
+                      src={article.images[0]}
+                      alt={isArabic ? article.title_ar : article.title_en}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
+                )}
 
                 {/* Content */}
                 <div className="p-6">
@@ -124,12 +131,12 @@ export default function NewsPage() {
 
                   {/* Title */}
                   <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-primary transition-colors">
-                    {article.title}
+                    {isArabic ? article.title_ar : article.title_en}
                   </h2>
 
                   {/* Excerpt */}
                   <p className="text-gray-600 mb-4 line-clamp-3">
-                    {getExcerpt(article.content)}
+                    {getExcerpt(isArabic ? article.content_ar : article.content_en)}
                   </p>
 
                   {/* Read More Link */}
@@ -137,7 +144,7 @@ export default function NewsPage() {
                     href={`/news/${article.id}`}
                     className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
                   >
-                    <span>اقرأ المزيد</span>
+                    <span>{t('readMore')}</span>
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
