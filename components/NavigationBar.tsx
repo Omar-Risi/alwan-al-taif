@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import LanguageToggle from "./LanguageToggle";
 
 export function NavigationBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +74,7 @@ export function NavigationBar() {
             {item.label}
           </Link>
         ))}
+        <LanguageToggle />
       </nav>
 
       {/* Mobile Menu Button */}
@@ -138,6 +140,9 @@ export function NavigationBar() {
                   </Link>
                 </motion.div>
               ))}
+              <div className="mt-6">
+                <LanguageToggle />
+              </div>
             </motion.nav>
           </>
         )}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConditionalNav } from "@/components/ConditionalNav";
 import { ConditionalMain } from "@/components/ConditionalMain";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Rainbow School | مدرسة الوان الطيف",
@@ -24,11 +25,13 @@ export default function RootLayout({
       <body
         className={`${cairo.className} antialiased bg-background`}
       >
-        <ConditionalNav />
-        <ConditionalMain>
-          {children}
-        </ConditionalMain>
-        <ConditionalFooter />
+        <Providers>
+          <ConditionalNav />
+          <ConditionalMain>
+            {children}
+          </ConditionalMain>
+          <ConditionalFooter />
+        </Providers>
       </body>
     </html>
   );

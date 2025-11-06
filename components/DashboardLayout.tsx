@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Newspaper, LogOut, Menu, X, Image, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageToggle from './LanguageToggle';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -103,8 +104,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="p-4 border-t border-primary/20"
+          className="p-4 border-t border-primary/20 space-y-3"
         >
+          <div className="px-2">
+            <LanguageToggle />
+          </div>
           <form action="/api/logout" method="POST">
             <button
               type="submit"
@@ -169,8 +173,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="p-4 border-t border-primary/20"
+          className="p-4 border-t border-primary/20 space-y-3"
         >
+          <div className="px-2">
+            <LanguageToggle />
+          </div>
           <form action="/api/logout" method="POST">
             <button
               type="submit"
