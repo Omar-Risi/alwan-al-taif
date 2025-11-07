@@ -26,18 +26,10 @@ export function NavigationBar() {
     closed: {
       opacity: 0,
       x: "100%",
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut",
-      },
     },
     open: {
       opacity: 1,
       x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut",
-      },
     },
   };
 
@@ -123,6 +115,7 @@ export function NavigationBar() {
               initial="closed"
               animate="open"
               exit="closed"
+              transition={{ duration: 0.3, ease: "easeInOut" }}
               className="fixed top-0 right-0 h-screen w-64 bg-white shadow-2xl z-40 lg:hidden flex flex-col pt-20 px-8"
             >
               {menuItems.map((item, i) => (
