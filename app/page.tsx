@@ -179,23 +179,6 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Vision Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-20 px-6 md:px-12 bg-gradient-to-br from-primary via-primary/95 to-primary/80"
-      >
-        <div className="max-w-6xl mx-auto text-center text-white">
-          <h2 className="text-2xl md:text-3xl font-bold">
-            {t('vision')}
-          </h2>
-          <p className="mt-3 text-sm md:text-base text-white/80">
-            {t('visionDescription')}
-          </p>
-        </div>
-      </motion.section>
-
       <NewsSection />
 
     </div>
