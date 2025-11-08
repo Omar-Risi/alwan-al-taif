@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { X, Play, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
+import { X, Play, Image as ImageIcon, Video as VideoIcon, Images } from 'lucide-react';
 
 interface GalleryItem {
   id: string;
@@ -54,8 +54,22 @@ export default function GalleryPage() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto px-4"
       >
-        <h1 className="text-3xl font-bold text-primary mb-2 text-center">معرض الصور والفيديوهات</h1>
-        <p className="text-gray-600 text-center mb-8">استعرض أحدث الصور والفيديوهات من مدرسة ألوان الطيف</p>
+        <div className="text-center mb-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+            <div className="bg-primary/10 p-4 rounded-full">
+              <Images className="w-10 h-10 text-primary" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-primary">معرض الصور والفيديوهات</h1>
+          </div>
+          <p className="text-gray-600 mb-4">استعرض أحدث الصور والفيديوهات من مدرسة ألوان الطيف</p>
+          {!loading && gallery.length > 0 && (
+            <div className="inline-block bg-primary/10 px-6 py-2 rounded-full">
+              <p className="text-gray-700">
+                إجمالي العناصر: <span className="font-bold text-primary text-lg">{gallery.length}</span>
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Filter Buttons */}
         <div className="flex justify-center gap-4 mb-8">
@@ -98,7 +112,7 @@ export default function GalleryPage() {
             <p className="text-gray-500">لا توجد عناصر في المعرض حتى الآن</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {filteredGallery.map((item, index) => (
               <motion.div
                 key={item.id}

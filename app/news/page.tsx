@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Newspaper } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -77,12 +77,25 @@ export default function NewsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            {t('news')}
-          </h1>
-          <p className="text-xl text-gray-600">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+            <div className="bg-primary/10 p-4 rounded-full">
+              <Newspaper className="w-10 h-10 text-primary" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-primary">
+              {t('news')}
+            </h1>
+          </div>
+          <p className="text-xl text-gray-600 mb-4">
             آخر الأخبار والفعاليات من مدرسة ألوان الطيف
           </p>
+          {!loading && news.length > 0 && (
+            <div className="inline-block bg-primary/10 px-6 py-2 rounded-full">
+              <p className="text-gray-700">
+                {isArabic ? 'إجمالي الأخبار: ' : 'Total Posts: '}
+                <span className="font-bold text-primary text-lg">{news.length}</span>
+              </p>
+            </div>
+          )}
         </motion.div>
 
         {/* News Grid */}
@@ -153,19 +166,7 @@ export default function NewsPage() {
           </div>
         )}
 
-        {/* Pagination placeholder - can be added later */}
-        {news.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-12 text-center"
-          >
-            <p className="text-gray-500">
-              عرض {news.length} من الأخبار
-            </p>
-          </motion.div>
-        )}
+
       </div>
     </div>
   );
