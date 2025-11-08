@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { supabase } from '@/lib/supabase';
+import { redirect } from 'next/navigation';
 
 export async function POST() {
   const cookieStore = await cookies();
@@ -12,7 +13,7 @@ export async function POST() {
   }
 
   const response = NextResponse.json({ message: 'Logout successful' });
-  
+
   // Clear cookies
   response.cookies.set({
     name: 'sb-access-token',
@@ -34,5 +35,5 @@ export async function POST() {
     path: '/',
   });
 
-  return response;
+  return redirect('/');
 }
