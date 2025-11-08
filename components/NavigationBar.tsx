@@ -46,25 +46,26 @@ export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) 
 
   return (
     <header className="w-full flex justify-center py-6 px-4">
-      <div className={`max-w-7xl w-full mx-auto px-6 py-4 rounded-full backdrop-blur-md border shadow-lg flex items-center justify-between ${
+      <div className={`max-w-7xl w-full mx-auto px-6 py-4 rounded-full backdrop-blur-md border shadow-lg flex items-center justify-between relative ${
         isHomepage 
           ? 'bg-white/10 border-white/20' 
           : 'bg-primary/20 border-primary/50'
       }`}>
-        <div>
+        {/* Logo - Left */}
+        <div className="z-10">
           <Link href="/">
             <Image
               src="/alwan-al-taif-logo.png"
               alt="شعار مدرسة الوان الطيف"
-              width={120}
-              height={32}
+              width={80}
+              height={26}
               className="drop-shadow-lg"
             />
           </Link>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-2">
+        {/* Desktop Navigation - Centered */}
+        <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
           {menuItems.map((item) => (
             <Link
               key={item.href}
@@ -76,10 +77,12 @@ export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) 
               {t(item.labelKey)}
             </Link>
           ))}
-          <div className="ml-2">
-            <LanguageToggle isHomepage={isHomepage} />
-          </div>
         </nav>
+
+        {/* Language Toggle - Right */}
+        <div className="hidden lg:block z-10">
+          <LanguageToggle isHomepage={isHomepage} />
+        </div>
 
         {/* Mobile Menu Button */}
         <button

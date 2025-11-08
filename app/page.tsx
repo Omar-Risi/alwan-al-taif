@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Calendar, Pen, Phone, Eye, Target, Heart, Users, BookOpen, Sparkles, Award } from "lucide-react";
+import { Calendar, Pen, Phone, Eye, Target, Heart, Users, BookOpen, Sparkles, Award, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import NewsSection from "@/components/NewsSection";
@@ -24,11 +24,25 @@ const quickLinks = [
   },
 ]
 
+const alwanSubjects = [
+  'alwanSubjectQuran',
+  'alwanSubjectArabic',
+  'alwanSubjectEnglish',
+  'alwanSubjectMath',
+  'alwanSubjectCivilization',
+];
+
+const alwanLevels = [
+  'alwanLevelPreparatory',
+  'alwanLevelKindergarten',
+  'alwanLevelAdvanced',
+];
+
 export default function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="overflow-x-hidden w-full">
+    <div className="w-full">
       {/* Hero Section with Video Background */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Fallback Background Image */}
@@ -69,35 +83,100 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex flex-col items-center gap-4 justify-center py-16 px-8 lg:px-24 bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+        className="py-20 px-6 md:px-12 bg-gradient-to-br from-primary via-primary/95 to-primary/80"
+      >
+        <div className="max-w-6xl mx-auto text-center text-white">
+          <h2 className="text-2xl md:text-3xl font-bold">
+            {t('quickLinks')}
+          </h2>
+          <p className="mt-3 text-sm md:text-base text-white/80">
+            {t('quickLinksDescription')}
+          </p>
 
-        <h1 className="text-2xl md:text-3xl font-bold text-white">
-          {t('quickLinks')}
-        </h1>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {quickLinks.map((link) => {
+              const Icon = link.icon;
+              const description = t(`${link.nameKey}Description`, {
+                defaultValue: '',
+              });
 
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-12 mt-8">
-
-          {quickLinks.map(link => {
-            const Icon = link.icon
-
-            return (
-              <div key={link.nameKey} className="bg-white rounded-xl p-6 aspect-sqare shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2">
-                <div className="bg-primary/20 p-3 rounded-lg w-fit">
-                  <Icon className="text-primary w-8 h-8" />
-                </div>
-                <p className="text-xl font-bold text-primary mt-4">
-                  {t(link.nameKey)}
-                </p>
-                <button className="text-white bg-primary px-6 py-3 font-semibold rounded-lg mt-4 hover:bg-primary/90 hover:shadow-lg transition-all">
-                  <Link href={link.href}>
-                    {t('goToPage')}
-                  </Link>
-                </button>
-              </div>
-            )
-          })}
+              return (
+                <Link
+                  key={link.nameKey}
+                  href={link.href}
+                  className="group relative flex h-full overflow-hidden rounded-2xl border border-white/20 bg-white/90 p-[1px] shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/40 focus:ring-offset-transparent"
+                >
+                  <div className="relative flex h-full w-full flex-col gap-6 rounded-[calc(theme(borderRadius.2xl)-1px)] bg-white/95 p-8 text-left">
+                    <span className="pointer-events-none absolute -top-16 -right-10 h-36 w-36 rounded-full bg-primary/10 transition-transform duration-300 group-hover:scale-125" />
+                    <div className="relative flex items-center justify-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary transition-transform duration-300 group-hover:rotate-6">
+                        <Icon className="h-7 w-7" />
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <h3 className="text-xl font-bold text-primary">
+                        {t(link.nameKey)}
+                      </h3>
+                      {description && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          {description}
+                        </p>
+                      )}
+                    </div>
+                    <span className="mt-auto flex items-center gap-2 text-sm font-semibold text-primary/80 transition-all duration-300 group-hover:text-primary">
+                      {t('goToPage')}
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
+      </motion.section>
 
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="py-20 px-6 bg-white"
+      >
+        <div className="max-w-6xl mx-auto rounded-3xl border border-primary/15 bg-gradient-to-br from-white via-white to-primary/5 p-10 shadow-xl">
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-xl">
+              <h2 className="mt-4 text-3xl font-bold text-primary">
+                {t('alwanSectionHeading')}
+              </h2>
+              <p className="mt-3 text-gray-600">
+                {t('alwanSectionDescription')}
+              </p>
+            </div>
+
+            <div className="grid w-full gap-6 sm:grid-cols-2">
+              <div className="rounded-2xl border border-primary/10 bg-white/90 p-6 shadow-lg">
+                <h3 className="text-lg font-semibold text-primary">
+                  {t('alwanSubjectsTitle')}
+                </h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-700">
+                  {alwanSubjects.map((subjectKey) => (
+                    <li key={subjectKey}>• {t(subjectKey)}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl border border-primary/10 bg-white/90 p-6 shadow-lg">
+                <h3 className="text-lg font-semibold text-primary">
+                  {t('alwanLevelsTitle')}
+                </h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-700">
+                  {alwanLevels.map((levelKey) => (
+                    <li key={levelKey}>• {t(levelKey)}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.section>
 
       {/* Vision Section */}
@@ -105,213 +184,15 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="py-16 mt-24"
+        className="py-20 px-6 md:px-12 bg-gradient-to-br from-primary via-primary/95 to-primary/80"
       >
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <Eye className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">{t('vision')}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="relative h-96 rounded-2xl overflow-hidden shadow-xl"
-            >
-              <Image
-                src="/our-vision.jpg"
-                alt="رؤية المدرسة"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white/50 backdrop-blur rounded-2xl p-8 shadow-lg border border-primary/20"
-            >
-              <div className="flex items-start gap-4">
-                <div className="bg-primary/20 p-3 rounded-full">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  {t('visionText')}
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Mission Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-16 mt-12 bg-primary/5"
-      >
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <BookOpen className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">{t('mission')}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-4 order-2 md:order-1"
-            >
-              <div className="bg-white backdrop-blur rounded-2xl p-6 shadow-lg border border-primary/20">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/20 p-3 rounded-full">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <p className="text-lg text-gray-700 leading-relaxed">
-                    {t('missionText')}
-                  </p>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="bg-primary/20 p-2 rounded-lg">
-                    <Award className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold text-primary">{t('workshops')}</h3>
-                </div>
-                <p className="text-gray-600">
-                  {t('workshopsText')}
-                </p>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="relative h-80 rounded-2xl overflow-hidden shadow-xl order-1 md:order-2"
-            >
-              <Image
-                src="/workshop.jpg"
-                alt="رسالة المدرسة"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Goals Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-16 mt-12"
-      >
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <Target className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">{t('goals')}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="relative h-80 rounded-2xl overflow-hidden shadow-xl"
-            >
-              <Image
-                src="/school.jpg"
-                alt="أهداف المدرسة"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white/50 backdrop-blur rounded-2xl p-8 shadow-lg border border-primary/20"
-            >
-              <div className="flex items-start gap-4">
-                <div className="bg-primary/20 p-3 rounded-full">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  {t('goalsText')}
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Values Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="py-16 mt-12 bg-primary/5"
-      >
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <Heart className="w-10 h-10 text-primary" />
-            <h2 className="text-3xl font-bold text-primary text-center">{t('valuesTitle')}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-4 order-2 md:order-1"
-            >
-              <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all hover:translate-x-2">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
-                    <BookOpen className="w-6 h-6 text-primary" />
-                  </div>
-                  <p className="text-gray-700 leading-relaxed">
-                    {t('value1')}
-                  </p>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all hover:translate-x-2">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <p className="text-gray-700 leading-relaxed">
-                    {t('value2')}
-                  </p>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all hover:translate-x-2">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/20 p-3 rounded-full flex-shrink-0">
-                    <Sparkles className="w-6 h-6 text-primary" />
-                  </div>
-                  <p className="text-gray-700 leading-relaxed">
-                    {t('value3')}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="relative h-96 rounded-2xl overflow-hidden shadow-xl order-1 md:order-2"
-            >
-              <Image
-                src="/boy.jpg"
-                alt="القيم"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
-          </div>
+        <div className="max-w-6xl mx-auto text-center text-white">
+          <h2 className="text-2xl md:text-3xl font-bold">
+            {t('vision')}
+          </h2>
+          <p className="mt-3 text-sm md:text-base text-white/80">
+            {t('visionDescription')}
+          </p>
         </div>
       </motion.section>
 
