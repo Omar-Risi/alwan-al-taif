@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { Phone, MapPin, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
@@ -72,12 +72,6 @@ export function Footer() {
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <a href="tel:+96812345678" className="text-gray-600 hover:text-primary transition-colors text-sm">
                   +968 1234 5678
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <a href="mailto:info@alwanaltaif.com" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  info@alwanaltaif.com
                 </a>
               </li>
             </ul>

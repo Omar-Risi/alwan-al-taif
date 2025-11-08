@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "motion/react";
-import { Mail, Phone, MessageCircle, MapPin, Clock } from "lucide-react";
+import { Phone, MessageCircle, MapPin, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function ContactPage() {
@@ -14,14 +14,6 @@ export default function ContactPage() {
       href: "tel:+96891234567",
       color: "bg-blue-500",
       hoverColor: "hover:bg-blue-600"
-    },
-    {
-      icon: Mail,
-      titleKey: "emailUs",
-      value: "info@rainbowschool.om",
-      href: "mailto:info@rainbowschool.om",
-      color: "bg-red-500",
-      hoverColor: "hover:bg-red-600"
     },
     {
       icon: MessageCircle,
@@ -51,7 +43,7 @@ export default function ContactPage() {
         </motion.div>
 
         {/* Contact Methods */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="flex flex-col gap-6 mb-16 max-w-4xl mx-auto">
           {contactMethods.map((method, index) => {
             const Icon = method.icon;
             return (
@@ -63,16 +55,18 @@ export default function ContactPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`${method.color} ${method.hoverColor} text-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 cursor-pointer`}
+                className={`${method.color} ${method.hoverColor} text-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all transform hover:scale-[1.02] cursor-pointer`}
               >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="bg-white/20 p-4 rounded-full">
-                    <Icon className="w-12 h-12" />
+                <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-8">
+                  <div className="bg-white/20 p-4 md:p-6 rounded-full flex-shrink-0">
+                    <Icon className="w-10 h-10 md:w-12 md:h-12" />
                   </div>
-                  <h3 className="text-2xl font-bold">{t(method.titleKey)}</h3>
-                  <p className="text-white/90 text-lg font-semibold">{method.value}</p>
-                  <div className="mt-4 bg-white/20 px-6 py-2 rounded-full">
-                    <span className="text-sm font-semibold">{t('clickToContact')}</span>
+                  <div className="flex-1 text-center md:text-left">
+                    <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2">{t(method.titleKey)}</h3>
+                    <p className="text-white/90 text-lg md:text-xl font-semibold">{method.value}</p>
+                  </div>
+                  <div className="bg-white/20 px-4 py-2 md:px-6 md:py-3 rounded-full flex-shrink-0">
+                    <span className="text-xs md:text-sm font-semibold">{t('clickToContact')}</span>
                   </div>
                 </div>
               </motion.a>
