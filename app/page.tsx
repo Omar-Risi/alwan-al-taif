@@ -26,7 +26,7 @@ const quickLinks = [
 
 export default function Home() {
   const { t } = useTranslation();
-  
+
   return (
     <div className="overflow-x-hidden w-full">
       {/* Hero Section with Video Background */}
@@ -35,7 +35,7 @@ export default function Home() {
         <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/20 to-accent/20">
           {/* You can add a background image here as fallback */}
         </div>
-        
+
         {/* YouTube Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <iframe
@@ -45,10 +45,10 @@ export default function Home() {
             style={{ border: 'none' }}
           ></iframe>
         </div>
-        
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 z-10"></div>
-        
+
         {/* Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -69,7 +69,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex flex-col items-center gap-4 justify-center py-16 mt-24 px-8 lg:px-24 bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+        className="flex flex-col items-center gap-4 justify-center py-16 px-8 lg:px-24 bg-gradient-to-br from-primary via-primary/90 to-primary/80">
 
         <h1 className="text-2xl md:text-3xl font-bold text-white">
           {t('quickLinks')}

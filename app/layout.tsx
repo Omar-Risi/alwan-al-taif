@@ -9,6 +9,10 @@ import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "Rainbow School | مدرسة الوان الطيف",
   description: "مدرسة الوان الطيف الخاصة لتعليم الأطفال | المعبيلة الجنوبية",
+  icons: {
+    icon: '/alwan-al-taif-logo.png', // Relative path from the public directory
+    apple: '/alwan-al-taif-logo.png',
+  },
 };
 const cairo = Cairo({
   subsets: ['latin', 'arabic'],
