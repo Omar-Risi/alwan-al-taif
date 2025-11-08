@@ -15,7 +15,6 @@ export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) 
 
   const menuItems = [
     { href: "/about", labelKey: "about" },
-    { href: "/identity", labelKey: "identity" },
     { href: "/admission", labelKey: "admission" },
     { href: "/news", labelKey: "news" },
     { href: "/gallery", labelKey: "gallery" },
