@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export default function AboutPage() {
   const { t } = useTranslation();
-  
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -143,7 +143,7 @@ export default function AboutPage() {
               className="relative h-80 rounded-2xl overflow-hidden shadow-xl"
             >
               <Image
-                src="/goals.jpg"
+                src="/school.jpg"
                 alt="أهداف المدرسة"
                 fill
                 className="object-cover"
