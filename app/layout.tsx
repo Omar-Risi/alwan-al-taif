@@ -21,9 +21,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" className="overflow-x-hidden">
       <body
-        className={`${cairo.className} antialiased bg-background`}
+        className={`${cairo.className} antialiased bg-background overflow-x-hidden`}
       >
         <Providers>
           <ConditionalNav />

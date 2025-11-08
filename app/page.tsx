@@ -28,7 +28,7 @@ export default function Home() {
   const { t } = useTranslation();
   
   return (
-    <>
+    <div className="overflow-x-hidden w-full">
       {/* Hero Section with Video Background */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Fallback Background Image */}
@@ -69,9 +69,9 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex flex-col items-center gap-4 justify-center py-8 mt-24 px-8 lg:px-24">
+        className="flex flex-col items-center gap-4 justify-center py-16 mt-24 px-8 lg:px-24 bg-gradient-to-br from-primary via-primary/90 to-primary/80">
 
-        <h1 className="text-2xl font-bold text-primary">
+        <h1 className="text-2xl md:text-3xl font-bold text-white">
           {t('quickLinks')}
         </h1>
 
@@ -81,14 +81,14 @@ export default function Home() {
             const Icon = link.icon
 
             return (
-              <div key={link.nameKey} className="bg-white rounded-md p-4 aspect-sqare shadow-md">
-                <div className="bg-primary/25 p-2 rounded w-fit">
-                  <Icon className="text-primary" />
+              <div key={link.nameKey} className="bg-white rounded-xl p-6 aspect-sqare shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2">
+                <div className="bg-primary/20 p-3 rounded-lg w-fit">
+                  <Icon className="text-primary w-8 h-8" />
                 </div>
                 <p className="text-xl font-bold text-primary mt-4">
                   {t(link.nameKey)}
                 </p>
-                <button className="text-white bg-primary px-4 py-2 font-semibold rounded-md mt-4 hover:bg-white hover:text-primary transition-colors ">
+                <button className="text-white bg-primary px-6 py-3 font-semibold rounded-lg mt-4 hover:bg-primary/90 hover:shadow-lg transition-all">
                   <Link href={link.href}>
                     {t('goToPage')}
                   </Link>
@@ -223,7 +223,7 @@ export default function Home() {
               className="relative h-80 rounded-2xl overflow-hidden shadow-xl"
             >
               <Image
-                src="/goals.jpg"
+                src="/school.jpg"
                 alt="أهداف المدرسة"
                 fill
                 className="object-cover"
@@ -255,7 +255,7 @@ export default function Home() {
         viewport={{ once: true }}
         className="py-16 mt-12 bg-primary/5"
       >
-        <div className="max-w-6xl mx-auto px-auto">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-12">
             <Heart className="w-10 h-10 text-primary" />
             <h2 className="text-3xl font-bold text-primary text-center">{t('valuesTitle')}</h2>
@@ -317,6 +317,6 @@ export default function Home() {
 
       <NewsSection />
 
-    </>
+    </div>
   );
 }
