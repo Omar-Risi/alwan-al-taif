@@ -14,5 +14,12 @@ export function ConditionalNav() {
     return null;
   }
 
-  return <NavigationBar />;
+  // Make navbar absolute on homepage
+  const isHomepage = pathname === '/';
+
+  return (
+    <div className={isHomepage ? 'absolute top-0 left-0 right-0 z-50' : ''}>
+      <NavigationBar isHomepage={isHomepage} />
+    </div>
+  );
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Languages } from 'lucide-react';
 
-export default function LanguageToggle() {
+export default function LanguageToggle({ isHomepage = false }: { isHomepage?: boolean }) {
   const { i18n } = useTranslation();
   const [mounted, setMounted] = useState(false);
 
@@ -29,11 +29,11 @@ export default function LanguageToggle() {
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+      className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 hover:bg-primary transition-all backdrop-blur-sm group"
       title={i18n.language === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
     >
-      <Languages className="w-5 h-5 text-primary" />
-      <span className="font-semibold text-primary">
+      <Languages className="w-5 h-5 text-primary group-hover:text-white" />
+      <span className="font-semibold text-primary group-hover:text-white">
         {i18n.language === 'ar' ? 'EN' : 'عربي'}
       </span>
     </button>

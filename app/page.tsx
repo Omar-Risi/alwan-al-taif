@@ -29,30 +29,47 @@ export default function Home() {
   
   return (
     <>
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center  gap-4 justify-center py-8">
-
-        <div className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-md ">
+      {/* Hero Section with Video Background */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Fallback Background Image */}
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/20 to-accent/20">
+          {/* You can add a background image here as fallback */}
+        </div>
+        
+        {/* YouTube Video Background */}
+        <div className="absolute inset-0 w-full h-full">
           <iframe
-            src="https://drive.google.com/file/d/13zj9amNOhpQRx6R0iJ3wR4QcvhlCjex9/preview"
+            src="https://www.youtube.com/embed/6xwZQC2WGBw?autoplay=1&mute=1&loop=1&playlist=6xwZQC2WGBw&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
             allow="autoplay; encrypted-media"
-            allowFullScreen
-            className="w-full h-full"
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            style={{ border: 'none' }}
           ></iframe>
         </div>
-
-        <h1 className="text-2xl font-bold text-primary">
-          {t('welcome')}
-        </h1>
-      </motion.section>
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        
+        {/* Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl">
+            {t('welcome')}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl drop-shadow-xl">
+            {t('footerDescription')}
+          </p>
+        </motion.div>
+      </section>
 
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex flex-col items-center  gap-4 justify-center py-8 mt-24">
+        className="flex flex-col items-center gap-4 justify-center py-8 mt-24 px-8 lg:px-24">
 
         <h1 className="text-2xl font-bold text-primary">
           {t('quickLinks')}

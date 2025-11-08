@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "./LanguageToggle";
 
-export function NavigationBar() {
+export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,54 +46,65 @@ export function NavigationBar() {
   };
 
   return (
-    <header className="px-8 py-4 lg:px-24 flex items-center justify-between w-full relative">
-      <div>
-        <Link href="/">
-          <Image
-            src="/alwan-al-taif-logo.png"
-            alt="شعار مدرسة الوان الطيف"
-            width={200}
-            height={50}
-          />
-        </Link>
-      </div>
-
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:flex items-center gap-4 text-lg font-semibold">
-        {menuItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="hover:bg-primary px-2 py-1 hover:text-white rounded-sm transition-colors"
-          >
-            {t(item.labelKey)}
+    <header className="w-full flex justify-center py-6 px-4">
+      <div className={`max-w-7xl w-full mx-auto px-6 py-4 rounded-full backdrop-blur-md border shadow-lg flex items-center justify-between ${
+        isHomepage 
+          ? 'bg-white/10 border-white/20' 
+          : 'bg-primary/20 border-primary/50'
+      }`}>
+        <div>
+          <Link href="/">
+            <Image
+              src="/alwan-al-taif-logo.png"
+              alt="شعار مدرسة الوان الطيف"
+              width={120}
+              height={32}
+              className="drop-shadow-lg"
+            />
           </Link>
-        ))}
-        <LanguageToggle />
-      </nav>
+        </div>
 
-      {/* Mobile Menu Button */}
-      <button
-        onClick={toggleMenu}
-        className="lg:hidden z-50 relative w-10 h-10 flex flex-col items-center justify-center gap-1.5"
-        aria-label="Toggle menu"
-      >
-        <motion.span
-          animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-          className="w-6 h-0.5 bg-current block"
-          transition={{ duration: 0.3 }}
-        />
-        <motion.span
-          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-          className="w-6 h-0.5 bg-current block"
-          transition={{ duration: 0.3 }}
-        />
-        <motion.span
-          animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-          className="w-6 h-0.5 bg-current block"
-          transition={{ duration: 0.3 }}
-        />
-      </button>
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-2">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`px-4 py-2 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all font-semibold ${
+                isHomepage ? 'text-white' : 'text-primary'
+              }`}
+            >
+              {t(item.labelKey)}
+            </Link>
+          ))}
+          <div className="ml-2">
+            <LanguageToggle isHomepage={isHomepage} />
+          </div>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="lg:hidden z-50 relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full bg-white/20 backdrop-blur-sm"
+          aria-label="Toggle menu"
+        >
+          <motion.span
+            animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+            className="w-6 h-0.5 bg-white block"
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+            className="w-6 h-0.5 bg-white block"
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+            className="w-6 h-0.5 bg-white block"
+            transition={{ duration: 0.3 }}
+          />
+        </button>
+      </div>
 
       {/* Mobile Navigation Menu */}
       <AnimatePresence>
@@ -116,7 +127,7 @@ export function NavigationBar() {
               animate="open"
               exit="closed"
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 right-0 h-screen w-64 bg-white shadow-2xl z-40 lg:hidden flex flex-col pt-20 px-8"
+              className="fixed top-0 right-0 h-screen w-64 bg-white/95 backdrop-blur-lg shadow-2xl z-40 lg:hidden flex flex-col pt-20 px-8"
             >
               {menuItems.map((item, i) => (
                 <motion.div

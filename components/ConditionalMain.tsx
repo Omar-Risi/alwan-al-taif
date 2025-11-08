@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 export function ConditionalMain({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   
-  // Don't wrap dashboard and login pages with padding
+  // Don't wrap dashboard and login pages with main tag
   const noPaddingPaths = ['/dashboard', '/login'];
   const shouldRemovePadding = noPaddingPaths.some(path => pathname.startsWith(path));
 
@@ -15,7 +15,7 @@ export function ConditionalMain({ children }: { children: ReactNode }) {
   }
 
   return (
-    <main className="px-8 py-4 lg:px-24 w-full">
+    <main className="w-full">
       {children}
     </main>
   );
