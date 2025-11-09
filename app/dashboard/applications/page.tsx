@@ -7,70 +7,19 @@ import { Search, Filter, Eye, Download, CheckCircle, XCircle, Clock, FileText } 
 interface Application {
   id: string;
   student_name: string;
+  father_name: string;
   class_applying: string;
   date_of_birth: string;
   parent_name: string;
   mobile_number: string;
+  job: string;
   mother_name: string;
   mother_mobile_number: string;
   status: "pending" | "approved" | "rejected";
   created_at: string;
 }
 
-// Mock data for demonstration
-const mockApplications: Application[] = [
-  {
-    id: "1",
-    childName: "Ahmed Ali",
-    childNameArabic: "أحمد علي",
-    gradeApplying: "grade1",
-    dateOfBirth: "2018-05-15",
-    fatherName: "Ali Mohammed",
-    fatherPhone: "+968 9123 4567",
-    fatherEmail: "ali@example.com",
-    motherName: "Fatima Hassan",
-    motherPhone: "+968 9234 5678",
-    status: "pending",
-    submittedAt: "2024-01-15T10:30:00"
-  },
-  {
-    id: "2",
-    childName: "Sara Abdullah",
-    childNameArabic: "سارة عبدالله",
-    gradeApplying: "kg2",
-    dateOfBirth: "2019-08-22",
-    fatherName: "Abdullah Salem",
-    fatherPhone: "+968 9345 6789",
-    fatherEmail: "abdullah@example.com",
-    motherName: "Maryam Khalid",
-    motherPhone: "+968 9456 7890",
-    status: "approved",
-    submittedAt: "2024-01-10T14:20:00"
-  },
-  {
-    id: "3",
-    childName: "Omar Saeed",
-    childNameArabic: "عمر سعيد",
-    gradeApplying: "grade2",
-    dateOfBirth: "2017-03-10",
-    fatherName: "Saeed Ahmed",
-    fatherPhone: "+968 9567 8901",
-    fatherEmail: "saeed@example.com",
-    motherName: "Aisha Mohammed",
-    motherPhone: "+968 9678 9012",
-    status: "rejected",
-    submittedAt: "2024-01-08T09:15:00"
-  }
-];
 
-const gradeLabels: Record<string, string> = {
-  kg1: "روضة أولى",
-  kg2: "روضة ثانية",
-  grade1: "الصف الأول",
-  grade2: "الصف الثاني",
-  grade3: "الصف الثالث",
-  grade4: "الصف الرابع"
-};
 
 const statusLabels: Record<string, string> = {
   pending: "قيد المراجعة",
