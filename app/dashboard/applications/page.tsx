@@ -1,20 +1,20 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { Search, Filter, Eye, Download, CheckCircle, XCircle, Clock, FileText } from "lucide-react";
 
 interface Application {
   id: string;
-  childName: string;
-  childNameArabic: string;
-  gradeApplying: string;
-  dateOfBirth: string;
-  fatherName: string;
-  fatherPhone: string;
-  fatherEmail: string;
-  motherName: string;
-  motherPhone: string;
+  student_name: string;
+  class_applying: string;
+  date_of_birth: string;
+  parent_name: string;
+  mobile_number: string;
+  mother_name: string;
+  mother_mobile_number: string;
   status: "pending" | "approved" | "rejected";
-  submittedAt: string;
+  created_at: string;
 }
 
 // Mock data for demonstration
@@ -91,33 +91,76 @@ const statusIcons: Record<string, any> = {
 };
 
 export default function ApplicationsPage() {
-  const [applications, setApplications] = useState<Application[]>(mockApplications);
+  const router = useRouter();
+  const { t } = useTranslation();
+  const [applications, setApplications] = useState<Application[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [filterStatus, searchTerm]);
+
+  const fetchApplications = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (filterStatus !== 'all') params.append('status', filterStatus);
+      if (searchTerm) params.append('search', searchTerm);
+
+      const response = await fetch(`/api/admissions?${params.toString()}`);
+      if (response.ok) {
+        const data = await response.json();
+        setApplications(data.admissions || []);
+      }
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
   const filteredApplications = applications.filter(app => {
     const matchesSearch = 
-      app.childName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.childNameArabic.includes(searchTerm) ||
-      app.fatherName.toLowerCase().includes(searchTerm.toLowerCase());
+      app.student_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.parent_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.mother_name?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFilter = filterStatus === "all" || app.status === filterStatus;
     
     return matchesSearch && matchesFilter;
   });
 
-  const handleStatusChange = (id: string, newStatus: "approved" | "rejected") => {
-    setApplications(applications.map(app => 
-      app.id === id ? { ...app, status: newStatus } : app
-    ));
+  const handleStatusChange = async (id: string, newStatus: "approved" | "rejected") => {
+    try {
+      const response = await fetch(`/api/admissions/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (response.ok) {
+        setApplications(applications.map(app => 
+          app.id === id ? { ...app, status: newStatus } : app
+        ));
+      } else {
+        alert('فشل تحديث الحالة');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('حدث خطأ أثناء تحديث الحالة');
+    }
   };
 
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-primary mb-2">طلبات التسجيل</h1>
-        <p className="text-gray-600">إدارة ومراجعة طلبات التسجيل المقدمة</p>
+        <h1 className="text-3xl font-bold text-primary mb-2">{t('admissionsManagement')}</h1>
+        <p className="text-gray-600">{t('admissionsSubtitle')}</p>
       </div>
 
       {/* Filters and Search */}
@@ -141,10 +184,10 @@ export default function ApplicationsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none"
             >
-              <option value="all">جميع الحالات</option>
-              <option value="pending">قيد المراجعة</option>
-              <option value="approved">مقبول</option>
-              <option value="rejected">مرفوض</option>
+              <option value="all">{t('allStatuses')}</option>
+              <option value="pending">{t('pendingApplications')}</option>
+              <option value="approved">{t('approvedApplications')}</option>
+              <option value="rejected">{t('rejectedApplications')}</option>
             </select>
           </div>
         </div>
@@ -155,7 +198,7 @@ export default function ApplicationsPage() {
         <div className="bg-yellow-50 rounded-lg p-6 border-r-4 border-yellow-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-yellow-800 font-semibold mb-1">قيد المراجعة</p>
+              <p className="text-yellow-800 font-semibold mb-1">{t('pendingApplications')}</p>
               <p className="text-3xl font-bold text-yellow-900">
                 {applications.filter(a => a.status === "pending").length}
               </p>
@@ -211,24 +254,24 @@ export default function ApplicationsPage() {
                   <tr key={app.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-semibold text-gray-900">{app.childName}</p>
-                        <p className="text-sm text-gray-600">{app.childNameArabic}</p>
+                        <p className="font-semibold text-gray-900">{app.student_name}</p>
+                        <p className="text-sm text-gray-600">{app.class_applying}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-gray-700">
-                      {gradeLabels[app.gradeApplying]}
+                      {app.class_applying}
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-gray-900">{app.fatherName}</p>
-                        <p className="text-sm text-gray-600">{app.fatherEmail}</p>
+                        <p className="font-medium text-gray-900">{app.parent_name}</p>
+                        <p className="text-sm text-gray-600">{app.mobile_number}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-gray-700 text-left">
-                      {app.fatherPhone}
+                      {app.mobile_number}
                     </td>
                     <td className="px-6 py-4 text-gray-700">
-                      {new Date(app.submittedAt).toLocaleDateString('ar-EG')}
+                      {new Date(app.created_at).toLocaleDateString('ar-EG')}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${statusColors[app.status]}`}>
@@ -239,7 +282,7 @@ export default function ApplicationsPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => setSelectedApplication(app)}
+                          onClick={() => router.push(`/dashboard/applications/${app.id}`)}
                           className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                           title="عرض التفاصيل"
                         >
@@ -306,20 +349,20 @@ export default function ApplicationsPage() {
                 <h3 className="text-lg font-bold text-primary mb-3">معلومات الطالب</h3>
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
-                    <p className="text-sm text-gray-600">الاسم (English)</p>
-                    <p className="font-semibold">{selectedApplication.childName}</p>
+                    <p className="text-sm text-gray-600">اسم الطالب</p>
+                    <p className="font-semibold">{selectedApplication.student_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">الاسم (العربية)</p>
-                    <p className="font-semibold">{selectedApplication.childNameArabic}</p>
+                    <p className="text-sm text-gray-600">اسم الأب</p>
+                    <p className="font-semibold">{selectedApplication.father_name}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">تاريخ الميلاد</p>
-                    <p className="font-semibold">{selectedApplication.dateOfBirth}</p>
+                    <p className="font-semibold">{selectedApplication.date_of_birth}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">الصف المتقدم له</p>
-                    <p className="font-semibold">{gradeLabels[selectedApplication.gradeApplying]}</p>
+                    <p className="font-semibold">{selectedApplication.class_applying}</p>
                   </div>
                 </div>
               </div>
@@ -330,15 +373,15 @@ export default function ApplicationsPage() {
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
                     <p className="text-sm text-gray-600">الاسم</p>
-                    <p className="font-semibold">{selectedApplication.fatherName}</p>
+                    <p className="font-semibold">{selectedApplication.parent_name}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">رقم الهاتف</p>
-                    <p className="font-semibold">{selectedApplication.fatherPhone}</p>
+                    <p className="font-semibold">{selectedApplication.mobile_number}</p>
                   </div>
                   <div className="md:col-span-2">
-                    <p className="text-sm text-gray-600">البريد الإلكتروني</p>
-                    <p className="font-semibold">{selectedApplication.fatherEmail}</p>
+                    <p className="text-sm text-gray-600">المهنة</p>
+                    <p className="font-semibold">{selectedApplication.job}</p>
                   </div>
                 </div>
               </div>
@@ -349,11 +392,11 @@ export default function ApplicationsPage() {
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
                     <p className="text-sm text-gray-600">الاسم</p>
-                    <p className="font-semibold">{selectedApplication.motherName}</p>
+                    <p className="font-semibold">{selectedApplication.mother_name}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">رقم الهاتف</p>
-                    <p className="font-semibold">{selectedApplication.motherPhone}</p>
+                    <p className="font-semibold">{selectedApplication.mother_mobile_number}</p>
                   </div>
                 </div>
               </div>

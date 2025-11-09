@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Newspaper, LogOut, Menu, X, Image, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import LanguageToggle from './LanguageToggle';
 
 interface DashboardLayoutProps {
@@ -13,18 +14,20 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const { t, i18n } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isArabic = i18n.language === 'ar';
 
   const navItems = [
-    { name: 'الرئيسية', href: '/dashboard', icon: Home },
-    { name: 'الأخبار', href: '/dashboard/news', icon: Newspaper },
-    { name: 'المعرض', href: '/dashboard/gallery', icon: Image },
-    { name: 'طلبات التسجيل', href: '/dashboard/applications', icon: FileText },
+    { nameKey: 'dashboard', href: '/dashboard', icon: Home },
+    { nameKey: 'news', href: '/dashboard/news', icon: Newspaper },
+    { nameKey: 'gallery', href: '/dashboard/gallery', icon: Image },
+    { nameKey: 'applications', href: '/dashboard/applications', icon: FileText },
   ];
 
   const sidebarVariants = {
     open: { x: 0 },
-    closed: { x: '-100%' },
+    closed: { x: isArabic ? '100%' : '-100%' },
   };
 
   const overlayVariants = {
@@ -33,16 +36,43 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Mobile Menu Button */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-primary text-white rounded-lg shadow-lg"
+    <div className="min-h-screen flex flex-col">
+      {/* Fixed Top Navigation Bar */}
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`fixed top-0 ${isArabic ? 'right-0' : 'left-0'} w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 shadow-sm`}
       >
-        {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </motion.button>
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-4">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              {sidebarOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+            </button>
+            
+            <h1 className="text-xl font-bold text-primary">{t('dashboard')}</h1>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <LanguageToggle />
+            <form action="/api/logout" method="POST">
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="hidden md:inline font-medium">{t('logout')}</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Spacer for fixed navbar */}
+      <div className="h-16"></div>
 
       {/* Overlay for mobile */}
       <AnimatePresence>
@@ -59,18 +89,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
-      <aside className="hidden lg:flex lg:static inset-y-0 left-0 z-40 w-64 bg-primary/10 border-r border-primary/20 flex-col">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="p-6"
-        >
-          <h1 className="text-2xl font-bold text-primary">لوحة التحكم</h1>
-        </motion.div>
-
-        <nav className="px-4 space-y-2 flex-1">
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <aside className={`hidden lg:flex ${isArabic ? 'lg:order-2' : 'lg:order-1'} lg:static inset-y-0 z-40 w-64 bg-primary/10 ${isArabic ? 'border-l' : 'border-r'} border-primary/20 flex-col`}>
+          <nav className="px-4 py-6 space-y-2 flex-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = item.href === '/dashboard' 
@@ -93,52 +115,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   }`}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium">{t(item.nameKey)}</span>
                 </Link>
               </motion.div>
             );
           })}
         </nav>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="p-4 border-t border-primary/20 space-y-3"
-        >
-          <div className="px-2">
-            <LanguageToggle />
-          </div>
-          <form action="/api/logout" method="POST">
-            <button
-              type="submit"
-              className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-all hover:translate-x-1"
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">تسجيل الخروج</span>
-            </button>
-          </form>
-        </motion.div>
-      </aside>
+        </aside>
 
-      {/* Mobile Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={sidebarOpen ? 'open' : 'closed'}
-        variants={sidebarVariants}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-primary/10 border-r border-primary/20 flex flex-col"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="p-6"
+        {/* Mobile Sidebar */}
+        <motion.aside
+          initial={false}
+          animate={sidebarOpen ? 'open' : 'closed'}
+          variants={sidebarVariants}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className={`lg:hidden fixed inset-y-0 ${isArabic ? 'right-0' : 'left-0'} z-40 w-64 bg-white ${isArabic ? 'border-l' : 'border-r'} border-gray-200 flex flex-col mt-16`}
         >
-          <h1 className="text-2xl font-bold text-primary">لوحة التحكم</h1>
-        </motion.div>
-
-        <nav className="px-4 space-y-2 flex-1">
+          <nav className="px-4 py-6 space-y-2 flex-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = item.href === '/dashboard' 
@@ -162,36 +156,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   }`}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium">{t(item.nameKey)}</span>
                 </Link>
               </motion.div>
             );
           })}
         </nav>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="p-4 border-t border-primary/20 space-y-3"
-        >
-          <div className="px-2">
-            <LanguageToggle />
-          </div>
-          <form action="/api/logout" method="POST">
-            <button
-              type="submit"
-              className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-all hover:translate-x-1"
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">تسجيل الخروج</span>
-            </button>
-          </form>
-        </motion.div>
-      </motion.aside>
+        </motion.aside>
 
-      {/* Main Content */}
-      <main className="flex-1 w-full lg:w-auto">
+        {/* Main Content */}
+        <main className={`flex-1 w-full lg:w-auto ${isArabic ? 'lg:order-1' : 'lg:order-2'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -199,7 +174,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         >
           {children}
         </motion.div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

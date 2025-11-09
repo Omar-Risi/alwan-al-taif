@@ -5,6 +5,7 @@ import { Plus, Edit, Trash2, Eye, Image as ImageIcon, Video } from 'lucide-react
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Image from 'next/image';
 
@@ -19,6 +20,7 @@ interface GalleryItem {
 
 export default function GalleryManagementPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -87,7 +89,7 @@ export default function GalleryManagementPage() {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
       >
-        <h2 className="text-2xl font-bold">إدارة المعرض</h2>
+        <h2 className="text-2xl font-bold">{t('galleryManagement')}</h2>
         <Link
           href="/dashboard/gallery/create"
           className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all hover:scale-105"
@@ -104,7 +106,7 @@ export default function GalleryManagementPage() {
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white/50 backdrop-blur rounded-lg shadow p-8 text-center border border-primary/20"
         >
-          <p className="text-gray-500">لا توجد عناصر في المعرض حتى الآن</p>
+          <p className="text-gray-500">{t('noMediaYet')}</p>
         </motion.div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
