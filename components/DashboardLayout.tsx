@@ -36,7 +36,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" dir={isArabic ? 'rtl' : 'ltr'}>
       {/* Fixed Top Navigation Bar */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
@@ -89,9 +89,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         )}
       </AnimatePresence>
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
         {/* Sidebar */}
-        <aside className={`hidden lg:flex ${isArabic ? 'lg:order-2' : 'lg:order-1'} lg:static inset-y-0 z-40 w-64 bg-primary/10 ${isArabic ? 'border-l' : 'border-r'} border-primary/20 flex-col`}>
+        <aside className={`hidden lg:flex lg:fixed top-16 bottom-0 ${isArabic ? 'right-0' : 'left-0'} z-40 w-64 bg-primary/10 ${isArabic ? 'border-l' : 'border-r'} border-primary/20 flex-col`}>
           <nav className="px-4 py-6 space-y-2 flex-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;
@@ -166,7 +166,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </motion.aside>
 
         {/* Main Content */}
-        <main className={`flex-1 w-full lg:w-auto ${isArabic ? 'lg:order-1' : 'lg:order-2'}`}>
+        <main className={`flex-1 w-full ${isArabic ? 'lg:mr-64' : 'lg:ml-64'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
