@@ -308,6 +308,16 @@ const resources = {
       viewDocument: "View",
       downloadDocument: "Download",
       noApplicationsFound: "No applications found",
+      
+      // Curriculums
+      curriculumsTitle: "Our Curriculums",
+      curriculumsDescription: "We provide comprehensive educational programs that combine academic excellence with character development",
+      omanCurriculum: "Omani Curriculum",
+      omanCurriculumDesc: "The Enhanced Omani Curriculum - A comprehensive educational program that follows the Ministry of Education standards, focusing on building strong foundations in core subjects while nurturing Omani values and identity.",
+      englishCurriculum: "English Language Programs",
+      englishCurriculumDesc: "Advanced English language learning through internationally recognized programs:",
+      superSafari: "Super Safari - Interactive English learning for young learners",
+      jollyPhonics: "Jolly Phonics - Systematic phonics instruction for reading and writing",
     }
   },
   ar: {
@@ -616,6 +626,16 @@ const resources = {
       viewDocument: "عرض",
       downloadDocument: "تحميل",
       noApplicationsFound: "لا توجد طلبات",
+      
+      // Curriculums
+      curriculumsTitle: "المناهج الدراسية",
+      curriculumsDescription: "نقدم برامج تعليمية شاملة تجمع بين التميز الأكاديمي وبناء الشخصية",
+      omanCurriculum: "المنهج العماني",
+      omanCurriculumDesc: "المنهج العماني المطور - برنامج تعليمي شامل يتبع معايير وزارة التربية والتعليم، مع التركيز على بناء أسس قوية في المواد الأساسية وتعزيز القيم والهوية العمانية.",
+      englishCurriculum: "برامج اللغة الإنجليزية",
+      englishCurriculumDesc: "تعلم اللغة الإنجليزية المتقدم من خلال برامج معترف بها دولياً:",
+      superSafari: "سوبر سفاري - تعلم تفاعلي للغة الإنجليزية للمتعلمين الصغار",
+      jollyPhonics: "جولي فونكس - تعليم منهجي للصوتيات للقراءة والكتابة",
     }
   }
 };

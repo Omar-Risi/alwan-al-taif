@@ -179,6 +179,80 @@ export default function Home() {
         </div>
       </motion.section>
 
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="py-20 px-6 bg-gradient-to-br from-accent/5 via-white to-primary/5"
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              {t('curriculumsTitle')}
+            </h2>
+            <p className="text-gray-600 text-lg">
+              {t('curriculumsDescription')}
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group relative overflow-hidden rounded-3xl border border-primary/20 bg-white p-8 shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+              <div className="relative">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                    <BookOpen className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">
+                    {t('omanCurriculum')}
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  {t('omanCurriculumDesc')}
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group relative overflow-hidden rounded-3xl border border-accent/20 bg-white p-8 shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
+              <div className="relative">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-accent">
+                    {t('englishCurriculum')}
+                  </h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  {t('englishCurriculumDesc')}
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-gray-700">
+                    <Award className="w-5 h-5 text-accent" />
+                    <span>{t('superSafari')}</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-gray-700">
+                    <Award className="w-5 h-5 text-accent" />
+                    <span>{t('jollyPhonics')}</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
       <NewsSection />
 
     </div>
