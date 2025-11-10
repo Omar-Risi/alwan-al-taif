@@ -72,13 +72,13 @@ export default function ApplicationsPage() {
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
   const filteredApplications = applications.filter(app => {
-    const matchesSearch = 
+    const matchesSearch =
       app.student_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.parent_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.mother_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesFilter = filterStatus === "all" || app.status === filterStatus;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -93,7 +93,7 @@ export default function ApplicationsPage() {
       });
 
       if (response.ok) {
-        setApplications(applications.map(app => 
+        setApplications(applications.map(app =>
           app.id === id ? { ...app, status: newStatus } : app
         ));
       } else {
@@ -237,12 +237,7 @@ export default function ApplicationsPage() {
                         >
                           <Eye className="w-5 h-5" />
                         </button>
-                        <button
-                          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                          title="تحميل المستندات"
-                        >
-                          <Download className="w-5 h-5" />
-                        </button>
+
                         {app.status === "pending" && (
                           <>
                             <button
