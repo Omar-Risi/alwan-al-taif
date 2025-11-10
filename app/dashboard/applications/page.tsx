@@ -82,7 +82,7 @@ export default function ApplicationsPage() {
     return matchesSearch && matchesFilter;
   });
 
-  const handleStatusChange = async (id: string, newStatus: "approved" | "rejected") => {
+  const handleStatusChange = async (id: string, newStatus: "pending" | "approved" | "rejected") => {
     try {
       const response = await fetch(`/api/admissions/${id}`, {
         method: 'PATCH',
@@ -238,24 +238,27 @@ export default function ApplicationsPage() {
                           <Eye className="w-5 h-5" />
                         </button>
 
-                        {app.status === "pending" && (
-                          <>
-                            <button
-                              onClick={() => handleStatusChange(app.id, "approved")}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                              title="قبول"
-                            >
-                              <CheckCircle className="w-5 h-5" />
-                            </button>
-                            <button
-                              onClick={() => handleStatusChange(app.id, "rejected")}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                              title="رفض"
-                            >
-                              <XCircle className="w-5 h-5" />
-                            </button>
-                          </>
-                        )}
+                        <button
+                          onClick={() => handleStatusChange(app.id, "pending")}
+                          className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                          title="قيد المراجعة"
+                        >
+                          <Clock className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleStatusChange(app.id, "approved")}
+                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          title="قبول"
+                        >
+                          <CheckCircle className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleStatusChange(app.id, "rejected")}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="رفض"
+                        >
+                          <XCircle className="w-5 h-5" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -353,28 +356,35 @@ export default function ApplicationsPage() {
                     {statusLabels[selectedApplication.status]}
                   </span>
                 </div>
-                {selectedApplication.status === "pending" && (
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        handleStatusChange(selectedApplication.id, "approved");
-                        setSelectedApplication(null);
-                      }}
-                      className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
-                    >
-                      قبول الطلب
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleStatusChange(selectedApplication.id, "rejected");
-                        setSelectedApplication(null);
-                      }}
-                      className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
-                    >
-                      رفض الطلب
-                    </button>
-                  </div>
-                )}
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      handleStatusChange(selectedApplication.id, "pending");
+                      setSelectedApplication(null);
+                    }}
+                    className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-semibold"
+                  >
+                    قيد المراجعة
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleStatusChange(selectedApplication.id, "approved");
+                      setSelectedApplication(null);
+                    }}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                  >
+                    قبول الطلب
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleStatusChange(selectedApplication.id, "rejected");
+                      setSelectedApplication(null);
+                    }}
+                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
+                  >
+                    رفض الطلب
+                  </button>
+                </div>
               </div>
             </div>
           </div>
