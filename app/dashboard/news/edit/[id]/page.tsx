@@ -65,15 +65,14 @@ export default function EditNewsPage() {
         const data = await res.json();
         console.log('Fetched news data:', data);
         
-        const news: News = data.news;
         setFormData({
-          title_ar: news.title_ar,
-          title_en: news.title_en,
-          content_ar: news.content_ar,
-          content_en: news.content_en,
-          published: news.published,
+          title_ar: data.title_ar,
+          title_en: data.title_en,
+          content_ar: data.content_ar,
+          content_en: data.content_en,
+          published: data.published,
         });
-        setUploadedImages(news.images || []);
+        setUploadedImages(data.images || []);
       } catch (err) {
         console.error('Error fetching news:', err);
         setError('فشل تحميل بيانات الخبر');
@@ -156,7 +155,7 @@ export default function EditNewsPage() {
       console.log('Update data:', { ...formData, images: allImages });
       
       const res = await fetch(`/api/news/${newsId}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
