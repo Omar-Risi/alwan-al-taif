@@ -10,16 +10,32 @@ export default function ContactPage() {
     {
       icon: Phone,
       titleKey: "callUs",
-      value: "+968 9123 4567",
-      href: "tel:+96891234567",
+      value: "+968 96460317",
+      href: "tel:+96896460317",
+      color: "bg-blue-500",
+      hoverColor: "hover:bg-blue-600"
+    },
+    {
+      icon: Phone,
+      titleKey: "callUs",
+      value: "+968 96461391",
+      href: "tel:+96896461391",
       color: "bg-blue-500",
       hoverColor: "hover:bg-blue-600"
     },
     {
       icon: MessageCircle,
       titleKey: "whatsapp",
-      value: "+968 9123 4567",
-      href: "https://wa.me/96891234567",
+      value: "+968 96460317",
+      href: "https://wa.me/96896460317",
+      color: "bg-green-500",
+      hoverColor: "hover:bg-green-600"
+    },
+    {
+      icon: MessageCircle,
+      titleKey: "whatsapp",
+      value: "+968 96461391",
+      href: "https://wa.me/96896461391",
       color: "bg-green-500",
       hoverColor: "hover:bg-green-600"
     }

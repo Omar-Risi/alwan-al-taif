@@ -14,11 +14,11 @@ const resources = {
       calendar: "Calendar",
       login: "Login",
       logout: "Logout",
-      
+
       // Dashboard
       dashboard: "Dashboard",
       applications: "Applications",
-      
+
       // Common
       welcome: "Welcome to Rainbow School",
       quickLinks: "Quick Links",
@@ -45,7 +45,7 @@ const resources = {
       grade: "Grade",
       parent: "Parent",
       submissionDate: "Submission Date",
-      
+
       // About Page
       aboutSchoolTitle: "About Rainbow School",
       aboutSchoolSubtitle: "We strive to provide an excellent educational environment that builds student character and achieves their ambitions",
@@ -69,13 +69,12 @@ const resources = {
       alwanSubjectMath: "Math",
       alwanSubjectCivilization: "Civilization",
       alwanLevelsTitle: "Levels",
-      alwanLevelPreparatory: "Preparatory",
-      alwanLevelKindergarten: "Kindergarten",
-      alwanLevelAdvanced: "Advanced",
+      alwanLevelPreparatory: "Kindergarten",
+      alwanLevelKindergarten: "Preparatory",
       value1: "Following the educational recommendations, policies and teaching methods emanating from government policies and under the supervision of the Ministry of Education in the Sultanate.",
       value2: "Appreciating childhood as different from adults and achieving the principle of individual differences for them.",
       value3: "Enhancing self-confidence, independent thinking and rules of good behavior for students.",
-      
+
       // Contact Page
       contactTitle: "Contact Us",
       contactSubtitle: "We are here to answer all your inquiries",
@@ -98,7 +97,7 @@ const resources = {
       teamReady: "Our team is ready to answer all your questions about registration, curriculum, and school activities",
       registerNow: "Register Now",
       learnMore: "Learn More About Us",
-      
+
       // Admission Page
       admissionTitle: "Admission Application",
       admissionSubtitle: "Please fill in all required fields and attach the necessary documents",
@@ -121,7 +120,7 @@ const resources = {
       grade3: "Grade 3",
       grade4: "Grade 4",
       previousSchool: "Previous School",
-      
+
       // Parent Information
       fatherInfo: "Father's Information",
       motherInfo: "Mother's Information",
@@ -131,13 +130,13 @@ const resources = {
       email: "Email",
       occupation: "Occupation",
       workplace: "Workplace",
-      
+
       // Address
       addressInfo: "Address",
       fullAddress: "Full Address",
       city: "City",
       postalCode: "Postal Code",
-      
+
       // Documents
       documentsRequired: "Required Documents",
       birthCertificate: "Birth Certificate",
@@ -145,7 +144,7 @@ const resources = {
       schoolRecords: "Previous School Records",
       medicalRecords: "Medical Records",
       parentId: "Parent ID",
-      
+
       // Additional Info
       additionalInfo: "Additional Information",
       medicalConditions: "Medical Conditions or Allergies",
@@ -155,7 +154,7 @@ const resources = {
       additionalNotes: "Additional Notes",
       additionalNotesPlaceholder: "Any additional information you would like to share",
       submitApplication: "Submit Application",
-      
+
       // Identity Page
       identity: "Brand Identity",
       brandIdentity: "Brand Identity",
@@ -184,7 +183,7 @@ const resources = {
       dont2: "Change logo colors",
       dont3: "Add effects or shadows to the logo",
       copied: "Copied!",
-      
+
       // Footer
       footerSchoolName: "Rainbow School",
       footerDescription: "A private school for children in Al Maabilah South, providing excellent education in a safe and stimulating environment.",
@@ -192,7 +191,7 @@ const resources = {
       footerContactUs: "Contact Us",
       footerFollowUs: "Follow Us",
       footerRights: "All rights reserved.",
-      
+
       // News Page
       newsPageTitle: "Latest News",
       newsPageSubtitle: "Latest news and events from Rainbow School",
@@ -205,7 +204,7 @@ const resources = {
       share: "Share",
       relatedNews: "Related News",
       newsNotFound: "News article not found",
-      
+
       // Dashboard
       welcomeDashboard: "Welcome to Dashboard",
       loggedInAs: "Logged in as",
@@ -213,7 +212,7 @@ const resources = {
       manageNewsDesc: "Add, edit, and delete news",
       manageGallery: "Manage Gallery",
       manageGalleryDesc: "Upload and manage images and videos",
-      
+
       // Dashboard News
       newsManagement: "News Management",
       addNews: "Add News",
@@ -224,7 +223,7 @@ const resources = {
       confirmDelete: "Confirm Delete",
       deleteNewsMessage: "Are you sure you want to delete the article",
       cannotUndo: "This action cannot be undone.",
-      
+
       // Dashboard Applications
       applicationsManagement: "Applications Management",
       applicationsSubtitle: "Manage and review submitted applications",
@@ -239,7 +238,7 @@ const resources = {
       currentStatus: "Current Status",
       approveApplication: "Approve Application",
       rejectApplication: "Reject Application",
-      
+
       // Terms Page
       termsTitle: "Registration Terms and Conditions",
       termsSubtitle: "Please read the terms and conditions carefully before proceeding",
@@ -273,7 +272,7 @@ const resources = {
       agreeToTerms: "I agree to all the terms and conditions mentioned above and pledge to abide by them",
       continueToForm: "Continue to Registration Form",
       pleaseAgree: "Please agree to the terms to continue",
-      
+
       // Gallery Dashboard
       galleryManagement: "Gallery Management",
       addMedia: "Add Media",
@@ -289,7 +288,7 @@ const resources = {
       uploadDate: "Upload Date",
       deleteMedia: "Delete Media",
       deleteMediaConfirm: "Are you sure you want to delete this media?",
-      
+
       // Admissions Dashboard
       admissionsManagement: "Admissions Management",
       admissionsSubtitle: "Manage and review submitted applications",
@@ -308,7 +307,7 @@ const resources = {
       viewDocument: "View",
       downloadDocument: "Download",
       noApplicationsFound: "No applications found",
-      
+
       // Curriculums
       curriculumsTitle: "Our Curriculums",
       curriculumsDescription: "We provide comprehensive educational programs that combine academic excellence with character development",
@@ -332,11 +331,11 @@ const resources = {
       calendar: "التقويم",
       login: "تسجيل الدخول",
       logout: "تسجيل الخروج",
-      
+
       // Dashboard
       dashboard: "لوحة التحكم",
       applications: "طلبات التسجيل",
-      
+
       // Common
       welcome: "مرحبًا بكم في مدرسة ألوان الطيف",
       quickLinks: "الروابط السريعة",
@@ -363,7 +362,7 @@ const resources = {
       grade: "الصف",
       parent: "ولي الأمر",
       submissionDate: "تاريخ التقديم",
-      
+
       // About Page
       aboutSchoolTitle: "عن مدرسة ألوان الطيف",
       aboutSchoolSubtitle: "نسعى لتوفير بيئة تعليمية متميزة تبني شخصية الطالب وتحقق طموحاته",
@@ -387,13 +386,12 @@ const resources = {
       alwanSubjectMath: "الرياضيات",
       alwanSubjectCivilization: "التربية الوطنية",
       alwanLevelsTitle: "المستويات",
-      alwanLevelPreparatory: "تمهيدي",
-      alwanLevelKindergarten: "روضة",
-      alwanLevelAdvanced: "تجهيزي",
+      alwanLevelPreparatory: "روضة",
+      alwanLevelKindergarten: "تمهيدي",
       value1: "اتباع التوصيات والسياسات التربوية وأساليب التعليم المنبثقة من السياسات الحكومية وتحت إشراف وزارة التربية والتعليم بالسلطنة.",
       value2: "تقدير الطفولة باعتبارها مختلفة عن البالغين وبما يتحقق لهم مبدأ الفروق الفردية.",
       value3: "تعزيز الثقة بالنفس والتفكير المستقل وقواعد السلوك القويم للتلاميذ.",
-      
+
       // Contact Page
       contactTitle: "تواصل معنا",
       contactSubtitle: "نحن هنا للإجابة على جميع استفساراتكم",
@@ -416,7 +414,7 @@ const resources = {
       teamReady: "فريقنا جاهز للإجابة على جميع أسئلتكم حول التسجيل، المناهج، والأنشطة المدرسية",
       registerNow: "التسجيل الآن",
       learnMore: "تعرف علينا أكثر",
-      
+
       // Admission Page
       admissionTitle: "طلب التسجيل",
       admissionSubtitle: "يرجى ملء جميع الحقول المطلوبة وإرفاق المستندات اللازمة",
@@ -439,7 +437,7 @@ const resources = {
       grade3: "الصف الثالث",
       grade4: "الصف الرابع",
       previousSchool: "المدرسة السابقة",
-      
+
       // Parent Information
       fatherInfo: "معلومات ولي الأمر (الأب)",
       motherInfo: "معلومات ولي الأمر (الأم)",
@@ -449,13 +447,13 @@ const resources = {
       email: "البريد الإلكتروني",
       occupation: "المهنة",
       workplace: "جهة العمل",
-      
+
       // Address
       addressInfo: "العنوان",
       fullAddress: "العنوان الكامل",
       city: "المدينة",
       postalCode: "الرمز البريدي",
-      
+
       // Documents
       documentsRequired: "المستندات المطلوبة",
       birthCertificate: "شهادة الميلاد",
@@ -463,7 +461,7 @@ const resources = {
       schoolRecords: "سجلات المدرسة السابقة",
       medicalRecords: "السجلات الطبية",
       parentId: "هوية ولي الأمر",
-      
+
       // Additional Info
       additionalInfo: "معلومات إضافية",
       medicalConditions: "الحالات الطبية أو الحساسية",
@@ -473,7 +471,7 @@ const resources = {
       additionalNotes: "ملاحظات إضافية",
       additionalNotesPlaceholder: "أي معلومات إضافية ترغب في مشاركتها",
       submitApplication: "إرسال الطلب",
-      
+
       // Identity Page
       identity: "الهوية البصرية",
       brandIdentity: "الهوية البصرية للمدرسة",
@@ -502,7 +500,7 @@ const resources = {
       dont2: "تغيير ألوان الشعار",
       dont3: "إضافة تأثيرات أو ظلال للشعار",
       copied: "تم النسخ!",
-      
+
       // Footer
       footerSchoolName: "مدرسة ألوان الطيف",
       footerDescription: "مدرسة خاصة لتعليم الأطفال في المعبيلة الجنوبية، نقدم تعليماً متميزاً في بيئة آمنة ومحفزة.",
@@ -510,7 +508,7 @@ const resources = {
       footerContactUs: "تواصل معنا",
       footerFollowUs: "تابعنا",
       footerRights: "جميع الحقوق محفوظة.",
-      
+
       // News Page
       newsPageTitle: "آخر الأخبار",
       newsPageSubtitle: "آخر الأخبار والفعاليات من مدرسة ألوان الطيف",
@@ -523,7 +521,7 @@ const resources = {
       share: "مشاركة",
       relatedNews: "أخبار ذات صلة",
       newsNotFound: "الخبر غير موجود",
-      
+
       // Dashboard
       welcomeDashboard: "مرحباً بك في لوحة التحكم",
       loggedInAs: "تم تسجيل الدخول بواسطة",
@@ -531,7 +529,7 @@ const resources = {
       manageNewsDesc: "إضافة وتعديل وحذف الأخبار",
       manageGallery: "إدارة المعرض",
       manageGalleryDesc: "رفع وإدارة الصور والفيديوهات",
-      
+
       // Dashboard News
       newsManagement: "إدارة الأخبار",
       addNews: "إضافة",
@@ -542,7 +540,7 @@ const resources = {
       confirmDelete: "تأكيد الحذف",
       deleteNewsMessage: "هل أنت متأكد من حذف الخبر",
       cannotUndo: "لا يمكن التراجع عن هذا الإجراء.",
-      
+
       // Dashboard Applications
       applicationsManagement: "طلبات التسجيل",
       applicationsSubtitle: "إدارة ومراجعة طلبات التسجيل المقدمة",
@@ -557,7 +555,7 @@ const resources = {
       currentStatus: "الحالة الحالية",
       approveApplication: "قبول الطلب",
       rejectApplication: "رفض الطلب",
-      
+
       // Terms Page
       termsTitle: "شروط وأحكام التسجيل",
       termsSubtitle: "يرجى قراءة الشروط والأحكام بعناية قبل المتابعة",
@@ -591,7 +589,7 @@ const resources = {
       agreeToTerms: "أوافق على جميع الشروط والأحكام المذكورة أعلاه وأتعهد بالالتزام بها",
       continueToForm: "المتابعة إلى نموذج التسجيل",
       pleaseAgree: "يرجى الموافقة على الشروط للمتابعة",
-      
+
       // Gallery Dashboard
       galleryManagement: "إدارة المعرض",
       addMedia: "إضافة وسائط",
@@ -607,7 +605,7 @@ const resources = {
       uploadDate: "تاريخ الرفع",
       deleteMedia: "حذف الوسائط",
       deleteMediaConfirm: "هل أنت متأكد من حذف هذه الوسائط؟",
-      
+
       // Admissions Dashboard
       admissionsManagement: "إدارة طلبات التسجيل",
       admissionsSubtitle: "إدارة ومراجعة طلبات التسجيل المقدمة",
@@ -626,7 +624,7 @@ const resources = {
       viewDocument: "عرض",
       downloadDocument: "تحميل",
       noApplicationsFound: "لا توجد طلبات",
-      
+
       // Curriculums
       curriculumsTitle: "المناهج الدراسية",
       curriculumsDescription: "نقدم برامج تعليمية شاملة تجمع بين التميز الأكاديمي وبناء الشخصية",

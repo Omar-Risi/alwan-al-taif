@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, MapPin, Instagram } from 'lucide-react';
+import { Phone, MapPin, Instagram, Youtube, Ghost } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
@@ -65,8 +66,14 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
-                <a href="tel:+96812345678" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  +968 1234 5678
+                <a href="tel:+96896460317" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  +968 96460317
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-5 h-5 text-primary flex-shrink-0" />
+                <a href="tel:+96896461391" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  +968 96461391
                 </a>
               </li>
             </ul>
@@ -79,14 +86,34 @@ export function Footer() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h3 className="text-xl font-bold text-primary mb-4">{t('footerFollowUs')}</h3>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/Rainbow_School1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all hover:scale-110"
+                className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:scale-110 transition-all text-white shadow-md hover:shadow-lg"
+                title="Instagram: Rainbow_School1"
               >
                 <Instagram className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.snapchat.com/add/Rainbowschool19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:scale-110 transition-all text-white shadow-md hover:shadow-lg"
+                title="Snapchat: Rainbowschool19"
+              >
+                <Image src="/snapchat.svg" alt='snapchat logo' width={24} height={24} />
+
+              </a>
+              <a
+                href="https://www.youtube.com/@rainbowkids163"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:scale-110 transition-all text-white shadow-md hover:shadow-lg"
+                title="YouTube: @rainbowkids163"
+              >
+                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </motion.div>

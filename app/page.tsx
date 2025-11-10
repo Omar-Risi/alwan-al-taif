@@ -35,7 +35,6 @@ const alwanSubjects = [
 const alwanLevels = [
   'alwanLevelPreparatory',
   'alwanLevelKindergarten',
-  'alwanLevelAdvanced',
 ];
 
 export default function Home() {
