@@ -46,19 +46,18 @@ export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) 
 
   return (
     <header className="w-full flex justify-center py-6 px-4">
-      <div className={`max-w-7xl w-full mx-auto px-6 py-4 rounded-full backdrop-blur-md border shadow-lg flex items-center justify-between relative ${
-        isHomepage 
-          ? 'bg-white/10 border-white/20' 
-          : 'bg-primary/20 border-primary/50'
-      }`}>
+      <div className={`max-w-7xl w-full mx-auto px-6 py-4 rounded-full backdrop-blur-md border shadow-lg flex items-center justify-between relative ${isHomepage
+        ? 'bg-white/10 border-white/20'
+        : 'bg-primary/20 border-primary/50'
+        }`}>
         {/* Logo - Left */}
         <div className="z-10">
           <Link href="/">
             <Image
               src="/alwan-al-taif-logo.png"
               alt="شعار مدرسة الوان الطيف"
-              width={80}
-              height={26}
+              width={120}
+              height={50}
               className="drop-shadow-lg"
             />
           </Link>
@@ -70,9 +69,8 @@ export function NavigationBar({ isHomepage = false }: { isHomepage?: boolean }) 
             <Link
               key={item.href}
               href={item.href}
-              className={`px-4 py-2 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all font-semibold ${
-                isHomepage ? 'text-white' : 'text-primary'
-              }`}
+              className={`px-4 py-2 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all font-semibold ${isHomepage ? 'text-white' : 'text-primary'
+                }`}
             >
               {t(item.labelKey)}
             </Link>
