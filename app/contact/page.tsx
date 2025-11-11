@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ContactPage() {
   const { t } = useTranslation();
-  
+
   const contactMethods = [
     {
       icon: Phone,
@@ -117,7 +117,7 @@ export default function ContactPage() {
               </p>
             </div>
             <a
-              href="https://maps.google.com"
+              href="https://maps.app.goo.gl/QQY1kw38GKWgAfFr9"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-semibold"
