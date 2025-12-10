@@ -64,11 +64,11 @@ export default function GalleryManagementPage() {
         closeDeleteDialog();
       } else {
         const data = await res.json();
-        alert(data.error || 'فشل حذف العنصر');
+        alert(data.error || t('deleteMedia'));
       }
     } catch (error) {
       console.error('Error deleting gallery item:', error);
-      alert('حدث خطأ أثناء حذف العنصر');
+      alert(t('errorOccurred'));
     } finally {
       setDeleting(false);
     }
@@ -77,7 +77,7 @@ export default function GalleryManagementPage() {
   if (loading) {
     return (
       <div className="p-8">
-        <p>جاري التحميل...</p>
+        <p>{t('loading')}</p>
       </div>
     );
   }
@@ -95,8 +95,8 @@ export default function GalleryManagementPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all hover:scale-105"
         >
           <Plus className="w-5 h-5" />
-          <span className="hidden sm:inline">إضافة عنصر جديد</span>
-          <span className="sm:hidden">إضافة</span>
+          <span className="hidden sm:inline">{t('addNewItem')}</span>
+          <span className="sm:hidden">{t('addMedia')}</span>
         </Link>
       </motion.div>
 
@@ -146,7 +146,7 @@ export default function GalleryManagementPage() {
                   ) : (
                     <Video className="w-4 h-4 text-primary" />
                   )}
-                  <span className="text-xs font-medium">{item.type === 'image' ? 'صورة' : 'فيديو'}</span>
+                  <span className="text-xs font-medium">{item.type === 'image' ? t('image') : t('video')}</span>
                 </div>
                 <div className="absolute top-2 right-2">
                   <span
@@ -156,7 +156,7 @@ export default function GalleryManagementPage() {
                         : 'bg-gray-500 text-white'
                     }`}
                   >
-                    {item.published ? 'منشور' : 'مسودة'}
+                    {item.published ? t('published') : t('draft')}
                   </span>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function GalleryManagementPage() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => openDeleteDialog(item)}
                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="حذف"
+                    title={t('delete')}
                   >
                     <Trash2 className="w-5 h-5" />
                   </motion.button>
@@ -187,10 +187,10 @@ export default function GalleryManagementPage() {
         isOpen={deleteDialogOpen}
         onClose={closeDeleteDialog}
         onConfirm={confirmDelete}
-        title="تأكيد الحذف"
-        message={`هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.`}
-        confirmText="حذف"
-        cancelText="إلغاء"
+        title={t('deleteConfirmTitle')}
+        message={t('deleteConfirmMessage')}
+        confirmText={t('deleteButton')}
+        cancelText={t('cancel')}
         isLoading={deleting}
       />
     </div>

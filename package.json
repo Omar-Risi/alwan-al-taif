@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "@supabase/supabase-js": "^2.79.0",
     "bcryptjs": "^3.0.3",
     "i18next": "^25.6.0",
@@ -20,7 +22,8 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-i18next": "^16.2.4",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
