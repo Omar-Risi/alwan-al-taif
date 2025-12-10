@@ -34,10 +34,19 @@ export default function GalleryManagementPage() {
   async function fetchGallery() {
     try {
       const res = await fetch('/api/gallery');
-      const data = await res.json();
-      setGallery(data.gallery || []);
+      
+      // Parse response safely
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        setGallery(data.gallery || []);
+      } else {
+        console.error('Unexpected response type:', contentType);
+        setGallery([]);
+      }
     } catch (error) {
       console.error('Error fetching gallery:', error);
+      setGallery([]);
     } finally {
       setLoading(false);
     }
@@ -63,8 +72,21 @@ export default function GalleryManagementPage() {
         setGallery(gallery.filter((item) => item.id !== itemToDelete.id));
         closeDeleteDialog();
       } else {
-        const data = await res.json();
-        alert(data.error || t('deleteMedia'));
+        // Parse error response safely
+        let errorMessage = t('deleteMedia');
+        try {
+          const contentType = res.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const data = await res.json();
+            errorMessage = data.error || errorMessage;
+          } else {
+            const text = await res.text();
+            errorMessage = text || errorMessage;
+          }
+        } catch (e) {
+          console.error('Error parsing response:', e);
+        }
+        alert(errorMessage);
       }
     } catch (error) {
       console.error('Error deleting gallery item:', error);

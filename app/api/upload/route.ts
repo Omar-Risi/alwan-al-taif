@@ -3,20 +3,27 @@ import { supabase } from '@/lib/supabase';
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
+// Configure route to handle larger files
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
+  const lang = req.headers.get('accept-language')?.includes('en') ? 'en' : 'ar';
+  
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
-    const lang = formData.get('lang') as string || 'ar';
+    const langParam = formData.get('lang') as string;
+    const currentLang = langParam || lang;
 
     if (!file) {
-      const errorMsg = lang === 'ar' ? 'لم يتم تقديم ملف' : 'No file provided';
+      const errorMsg = currentLang === 'ar' ? 'لم يتم تقديم ملف' : 'No file provided';
       return NextResponse.json({ error: errorMsg }, { status: 400 });
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      const errorMsg = lang === 'ar' 
+      const errorMsg = currentLang === 'ar' 
         ? `الملف كبير جداً: ${(file.size / 1024 / 1024).toFixed(2)} ميجابايت. الحد الأقصى 50 ميجابايت.`
         : `File too large: ${(file.size / 1024 / 1024).toFixed(2)}MB. Maximum is 50MB.`;
       return NextResponse.json({
@@ -50,7 +57,7 @@ export async function POST(req: Request) {
       const { data: buckets } = await supabase.storage.listBuckets();
       console.log('Available buckets:', buckets?.map(b => b.name));
 
-      const hint = lang === 'ar'
+      const hint = currentLang === 'ar'
         ? 'قم بتشغيل SQL في supabase-storage-setup.sql لإنشاء bucket والصلاحيات'
         : 'Run the SQL in supabase-storage-setup.sql to create the bucket and policies';
 
@@ -76,9 +83,18 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error('Upload error:', error);
-    const lang = 'ar'; // Default to Arabic for catch block
     const errorMsg = lang === 'ar' ? 'فشل الرفع' : 'Upload failed';
     const details = lang === 'ar' ? 'تحقق من سجلات الخادم لمزيد من المعلومات' : 'Check server logs for more information';
+    
+    // Handle request entity too large error
+    if (error?.message?.includes('PayloadTooLargeError') || error?.message?.includes('Request Entity Too Large')) {
+      return NextResponse.json({
+        error: lang === 'ar' 
+          ? 'الملف كبير جداً للخادم. الحد الأقصى 50 ميجابايت.'
+          : 'File too large for server. Maximum 50MB.',
+        details
+      }, { status: 413 });
+    }
     
     return NextResponse.json({
       error: error?.message || errorMsg,

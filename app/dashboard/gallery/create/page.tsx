@@ -260,12 +260,20 @@ export default function CreateGalleryPage() {
           body: formData,
         });
 
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(`${t('uploadFailed')} ${fileItem.file.name}: ${errorData.error}`);
+        // Parse response
+        let data;
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          data = await res.json();
+        } else {
+          const text = await res.text();
+          data = { error: text };
         }
 
-        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(`${t('uploadFailed')} ${fileItem.file.name}: ${data.error || res.statusText}`);
+        }
+
         return {
           url: data.url,
           type: fileItem.file.type.startsWith('video/') ? 'video' : 'image',
@@ -287,11 +295,21 @@ export default function CreateGalleryPage() {
           }),
         });
 
-        if (!res.ok) {
-          throw new Error(t('saveFailed'));
+        // Parse response
+        let data;
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          data = await res.json();
+        } else {
+          const text = await res.text();
+          data = { error: text };
         }
 
-        return res.json();
+        if (!res.ok) {
+          throw new Error(`${t('saveFailed')}: ${data.error || res.statusText}`);
+        }
+
+        return data;
       });
 
       await Promise.all(createPromises);
