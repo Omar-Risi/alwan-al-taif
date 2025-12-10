@@ -89,7 +89,7 @@ export default function CreateGalleryPage() {
     }
 
     setCompressionProgress(prev => ({ ...prev, [index]: 100 }));
-    return new Blob([compressed!.buffer], { type: 'image/jpeg' });
+    return new Blob([new Uint8Array(compressed!)], { type: 'image/jpeg' });
   };
 
   const compressVideo = async (file: File, index: number): Promise<Blob> => {
@@ -136,7 +136,7 @@ export default function CreateGalleryPage() {
     }
 
     setCompressionProgress(prev => ({ ...prev, [index]: 100 }));
-    return new Blob([compressed!.buffer], { type: 'video/mp4' });
+    return new Blob([new Uint8Array(compressed!)], { type: 'video/mp4' });
   };
 
   async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
