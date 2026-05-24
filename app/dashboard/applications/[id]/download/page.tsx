@@ -151,16 +151,43 @@ export default function DownloadAdmissionPage() {
       {/* Printable A4 Page */}
       <div className="max-w-[210mm] min-h-[297mm] mx-auto bg-white p-12 shadow-lg print:shadow-none text-black">
         {/* Header */}
-        <div className="text-center border-b-2 border-gray-800 pb-6 mb-8">
-          <h1 className="text-2xl font-bold mb-2 flex flex-col gap-1">
-            <span>استمارة طلب تسجيل</span>
-            <span dir="ltr" className="text-xl">Admission Application Form</span>
-          </h1>
-          <p className="text-gray-600 mt-4 flex justify-center gap-2">
-            <span>تاريخ التقديم:</span>
-            <span dir="ltr">{new Date(admission.created_at).toLocaleDateString('en-GB')}</span>
-            <span>:Date of Application</span>
-          </p>
+        <div className="border-b-2 border-gray-800 pb-6 mb-8">
+          <div className="flex justify-between items-center mb-6 gap-4">
+            {/* Arabic School Info */}
+            <div className="text-right flex-1">
+              <h2 className="text-xl font-bold text-gray-900 leading-tight">مدرسة ألوان الطيف</h2>
+              <p className="text-xs font-semibold text-gray-600 mt-1">سلطنة عمان</p>
+              <p className="text-[11px] text-gray-500">مسقط - المعبيلة الجنوبية</p>
+            </div>
+            
+            {/* Logo */}
+            <div className="flex-shrink-0 px-4">
+              <img
+                src="/alwan-al-taif-logo.png"
+                alt="School Logo"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
+
+            {/* English School Info */}
+            <div className="text-left flex-1" dir="ltr">
+              <h2 className="text-xl font-bold text-gray-900 leading-tight">Rainbow School</h2>
+              <p className="text-xs font-semibold text-gray-600 mt-1">Sultanate of Oman</p>
+              <p className="text-[11px] text-gray-500">Muscat - Al Maabilah South</p>
+            </div>
+          </div>
+
+          <div className="text-center mt-6 pt-4 border-t border-gray-200">
+            <h1 className="text-2xl font-bold mb-2 flex flex-col gap-1">
+              <span>استمارة طلب تسجيل</span>
+              <span dir="ltr" className="text-xl">Admission Application Form</span>
+            </h1>
+            <p className="text-gray-600 mt-2 flex justify-center gap-2 text-sm">
+              <span>تاريخ التقديم:</span>
+              <span dir="ltr">{new Date(admission.created_at).toLocaleDateString('en-GB')}</span>
+              <span>:Date of Application</span>
+            </p>
+          </div>
         </div>
 
         {/* Sections */}
