@@ -3,9 +3,11 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { User, Users, MapPin, Phone, Bus, FileText, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function AdmissionPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     // Student Information
     classApplying: "",
@@ -135,7 +137,7 @@ export default function AdmissionPage() {
       }, 3000);
     } catch (error: any) {
       console.error('Error submitting application:', error);
-      alert(`حدث خطأ أثناء إرسال الطلب:\n${error.message}\n\nيرجى المحاولة مرة أخرى.`);
+      alert(t('submissionError', { message: error.message }));
     } finally {
       setSubmitting(false);
     }
@@ -149,10 +151,8 @@ export default function AdmissionPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-primary mb-4">طلب التسجيل</h1>
-          <p className="text-gray-600 text-lg">
-            يرجى ملء جميع الحقول المطلوبة
-          </p>
+          <h1 className="text-4xl font-bold text-primary mb-4">{t('admissionTitle')}</h1>
+          <p className="text-gray-600 text-lg">{t('admissionSubtitle')}</p>
         </motion.div>
 
         <motion.form
@@ -166,13 +166,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <User className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">معلومات الطالب</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('studentInfo')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  الصف المتقدم له *
+                  {t('gradeApplying')} *
                 </label>
                 <select
                   name="classApplying"
@@ -181,15 +181,15 @@ export default function AdmissionPage() {
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value="">اختر الصف</option>
-                  <option value="KG1">KG1</option>
-                  <option value="KG2">KG2</option>
+                  <option value="">{t('selectGrade')}</option>
+                  <option value="KG1">{t('kg1')}</option>
+                  <option value="KG2">{t('kg2')}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم الطالب *
+                  {t('studentNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -198,13 +198,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم الطالب"
+                  placeholder={t('studentNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم الأب *
+                  {t('fatherNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -213,13 +213,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم الأب"
+                  placeholder={t('fatherNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم الجد *
+                  {t('grandfatherNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -228,13 +228,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم الجد"
+                  placeholder={t('grandfatherNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم القبيلة *
+                  {t('tribeNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -243,13 +243,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم القبيلة"
+                  placeholder={t('tribeNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  الجنسية *
+                  {t('nationality')} *
                 </label>
                 <input
                   type="text"
@@ -258,13 +258,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="الجنسية"
+                  placeholder={t('nationality')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  تاريخ الميلاد *
+                  {t('dateOfBirth')} *
                 </label>
                 <input
                   type="date"
@@ -278,7 +278,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  مكان الميلاد *
+                  {t('placeOfBirth')} *
                 </label>
                 <input
                   type="text"
@@ -287,13 +287,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="مكان الميلاد"
+                  placeholder={t('placeOfBirth')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  الجنس *
+                  {t('gender')} *
                 </label>
                 <select
                   name="gender"
@@ -302,15 +302,15 @@ export default function AdmissionPage() {
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value="">اختر الجنس</option>
-                  <option value="male">ذكر</option>
-                  <option value="female">أنثى</option>
+                  <option value="">{t('selectGender')}</option>
+                  <option value="male">{t('male')}</option>
+                  <option value="female">{t('female')}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  الديانة *
+                  {t('religionLabel')} *
                 </label>
                 <input
                   type="text"
@@ -319,13 +319,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="الديانة"
+                  placeholder={t('religionLabel')}
                 />
               </div>
 
               <div className="md:col-span-2">
                 <label className="block text-gray-700 font-semibold mb-2">
-                  ملاحظات
+                  {t('remarksLabel')}
                 </label>
                 <textarea
                   name="remarks"
@@ -333,7 +333,7 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   rows={2}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="أي ملاحظات إضافية"
+                  placeholder={t('remarksPlaceholder')}
                 />
               </div>
             </div>
@@ -343,13 +343,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <Users className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">معلومات ولي الأمر (الأب)</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('fatherInfo')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم ولي الأمر *
+                  {t('parentNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -358,13 +358,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم ولي الأمر"
+                  placeholder={t('parentNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم الهاتف *
+                  {t('phoneNumber')} *
                 </label>
                 <input
                   type="tel"
@@ -379,7 +379,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم هاتف العمل
+                  {t('workPhoneNumber')}
                 </label>
                 <input
                   type="tel"
@@ -393,7 +393,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  المهنة *
+                  {t('occupation')} *
                 </label>
                 <input
                   type="text"
@@ -402,13 +402,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="المهنة"
+                  placeholder={t('occupation')}
                 />
               </div>
 
               <div className="md:col-span-2">
                 <label className="block text-gray-700 font-semibold mb-2">
-                  جهة العمل *
+                  {t('workplace')} *
                 </label>
                 <input
                   type="text"
@@ -417,7 +417,7 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="جهة العمل"
+                  placeholder={t('workplace')}
                 />
               </div>
             </div>
@@ -427,13 +427,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <Users className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">معلومات الأم</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('motherInfo')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم الأم *
+                  {t('motherNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -442,13 +442,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم الأم"
+                  placeholder={t('motherNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم الهاتف *
+                  {t('phoneNumber')} *
                 </label>
                 <input
                   type="tel"
@@ -463,7 +463,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم هاتف العمل
+                  {t('workPhoneNumber')}
                 </label>
                 <input
                   type="tel"
@@ -477,7 +477,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  المهنة *
+                  {t('occupation')} *
                 </label>
                 <input
                   type="text"
@@ -486,13 +486,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="المهنة"
+                  placeholder={t('occupation')}
                 />
               </div>
 
               <div className="md:col-span-2">
                 <label className="block text-gray-700 font-semibold mb-2">
-                  جهة العمل *
+                  {t('workplace')} *
                 </label>
                 <input
                   type="text"
@@ -501,7 +501,7 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="جهة العمل"
+                  placeholder={t('workplace')}
                 />
               </div>
             </div>
@@ -511,13 +511,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <Phone className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">معلومات قريب</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('relativeInfo')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  اسم القريب *
+                  {t('relativeNameLabel')} *
                 </label>
                 <input
                   type="text"
@@ -526,13 +526,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اسم القريب"
+                  placeholder={t('relativeNameLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم هاتف القريب *
+                  {t('relativePhoneLabel')} *
                 </label>
                 <input
                   type="tel"
@@ -551,12 +551,12 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <User className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">التعليم السابق</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('previousEducationTitle')}</h2>
             </div>
 
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                هل درس الطفل في مكان آخر من قبل؟
+                {t('previousSchoolQuestion')}
               </label>
               <input
                 type="text"
@@ -564,7 +564,7 @@ export default function AdmissionPage() {
                 value={formData.previousSchool}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="اسم المدرسة السابقة (إن وجدت)"
+                placeholder={t('previousSchoolPlaceholder')}
               />
             </div>
           </div>
@@ -573,13 +573,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <MapPin className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">بيانات النقل والمنزل</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('transportHomeTitle')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  المنطقة *
+                  {t('regionLabel')} *
                 </label>
                 <input
                   type="text"
@@ -588,13 +588,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="المنطقة"
+                  placeholder={t('regionLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم القرية *
+                  {t('villageNoLabel')} *
                 </label>
                 <input
                   type="text"
@@ -603,13 +603,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="رقم القرية"
+                  placeholder={t('villageNoLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  رقم المنزل *
+                  {t('houseNumberLabel')} *
                 </label>
                 <input
                   type="text"
@@ -618,13 +618,13 @@ export default function AdmissionPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="رقم المنزل"
+                  placeholder={t('houseNumberLabel')}
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  وصف الموقع أو أي معلم
+                  {t('siteDescriptionLabel')}
                 </label>
                 <input
                   type="text"
@@ -632,7 +632,7 @@ export default function AdmissionPage() {
                   value={formData.siteDescription}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="وصف الموقع"
+                  placeholder={t('siteDescriptionPlaceholder')}
                 />
               </div>
             </div>
@@ -642,13 +642,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <Bus className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">النقل المدرسي</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('schoolTransportTitle')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  النقل المدرسي *
+                  {t('schoolTransportLabel')} *
                 </label>
                 <select
                   name="schoolTransport"
@@ -657,9 +657,9 @@ export default function AdmissionPage() {
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value="">اختر</option>
-                  <option value="yes">نعم</option>
-                  <option value="no">لا</option>
+                  <option value="">{t('selectOption')}</option>
+                  <option value="yes">{t('yes')}</option>
+                  <option value="no">{t('no')}</option>
                 </select>
               </div>
 
@@ -667,7 +667,7 @@ export default function AdmissionPage() {
                 <>
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      نوع النقل *
+                      {t('transportTypeLabel')} *
                     </label>
                     <input
                       type="text"
@@ -676,13 +676,13 @@ export default function AdmissionPage() {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="نوع النقل"
+                      placeholder={t('transportTypePlaceholder')}
                     />
                   </div>
 
                   <div className="md:col-span-2">
                     <label className="block text-gray-700 font-semibold mb-2">
-                      نوع الرحلة *
+                      {t('tripTypeLabel')} *
                     </label>
                     <select
                       name="tripType"
@@ -691,10 +691,10 @@ export default function AdmissionPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
-                      <option value="">اختر نوع الرحلة</option>
-                      <option value="twoWay">رحلة ذهاب وعودة</option>
-                      <option value="toSchool">إلى المدرسة فقط</option>
-                      <option value="fromSchool">من المدرسة فقط</option>
+                      <option value="">{t('selectTripType')}</option>
+                      <option value="twoWay">{t('tripTwoWay')}</option>
+                      <option value="toSchool">{t('tripToSchool')}</option>
+                      <option value="fromSchool">{t('tripFromSchool')}</option>
                     </select>
                   </div>
                 </>
@@ -706,13 +706,13 @@ export default function AdmissionPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-primary/20">
               <FileText className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">المستندات المطلوبة</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('documentsRequired')}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  شهادة الميلاد *
+                  {t('birthCertificate')} *
                 </label>
                 <input
                   type="file"
@@ -728,7 +728,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  بطاقة التطعيم *
+                  {t('vaccinationCard')} *
                 </label>
                 <input
                   type="file"
@@ -744,7 +744,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  جواز السفر *
+                  {t('passport')} *
                 </label>
                 <input
                   type="file"
@@ -760,7 +760,7 @@ export default function AdmissionPage() {
 
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
-                  البطاقة الشخصية لولي الأمر *
+                  {t('parentId')} *
                 </label>
                 <input
                   type="file"
@@ -776,7 +776,7 @@ export default function AdmissionPage() {
 
               <div className="md:col-span-2">
                 <label className="block text-gray-700 font-semibold mb-2">
-                  صورة للبيت *
+                  {t('housePhoto')} *
                 </label>
                 <input
                   type="file"
@@ -798,9 +798,9 @@ export default function AdmissionPage() {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-3 text-green-600 mb-4">
                   <CheckCircle className="w-12 h-12" />
-                  <p className="text-2xl font-bold">تم إرسال الطلب بنجاح!</p>
+                  <p className="text-2xl font-bold">{t('submitSuccessTitle')}</p>
                 </div>
-                <p className="text-gray-600">سيتم تحويلك إلى الصفحة الرئيسية...</p>
+                <p className="text-gray-600">{t('submitSuccessSubtitle')}</p>
               </div>
             ) : (
               <>
@@ -809,7 +809,7 @@ export default function AdmissionPage() {
                   onClick={() => setShowPreview(true)}
                   className="px-8 py-4 rounded-lg font-bold text-lg bg-white text-primary border-2 border-primary hover:bg-primary/10 transition-colors shadow-lg hover:shadow-xl"
                 >
-                  معاينة البيانات
+                  {t('previewData')}
                 </button>
                 <button
                   type="submit"
@@ -820,7 +820,7 @@ export default function AdmissionPage() {
                       : 'bg-primary text-white hover:bg-primary/90'
                   }`}
                 >
-                  {submitting ? 'جاري الإرسال...' : 'إرسال الطلب'}
+                  {submitting ? t('submittingApplication') : t('submitApplication')}
                 </button>
               </>
             )}
@@ -837,7 +837,7 @@ export default function AdmissionPage() {
             >
               <div className="sticky top-0 bg-primary text-white p-6 rounded-t-2xl">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold">معاينة البيانات</h2>
+                  <h2 className="text-2xl font-bold">{t('previewTitle')}</h2>
                   <button
                     onClick={() => setShowPreview(false)}
                     className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
@@ -852,21 +852,21 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <User className="w-6 h-6" />
-                    معلومات الطالب
+                    {t('studentInfo')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">الصف:</span> {formData.classApplying}</div>
-                    <div><span className="font-semibold">اسم الطالب:</span> {formData.studentName}</div>
-                    <div><span className="font-semibold">اسم الأب:</span> {formData.fatherName}</div>
-                    <div><span className="font-semibold">اسم الجد:</span> {formData.grandfatherName}</div>
-                    <div><span className="font-semibold">اسم القبيلة:</span> {formData.tribeName}</div>
-                    <div><span className="font-semibold">الجنسية:</span> {formData.nationality}</div>
-                    <div><span className="font-semibold">تاريخ الميلاد:</span> {formData.dateOfBirth}</div>
-                    <div><span className="font-semibold">مكان الميلاد:</span> {formData.placeOfBirth}</div>
-                    <div><span className="font-semibold">الجنس:</span> {formData.gender === 'male' ? 'ذكر' : 'أنثى'}</div>
-                    <div><span className="font-semibold">الديانة:</span> {formData.religion}</div>
+                    <div><span className="font-semibold">{t('grade')}:</span> {formData.classApplying}</div>
+                    <div><span className="font-semibold">{t('studentNameLabel')}:</span> {formData.studentName}</div>
+                    <div><span className="font-semibold">{t('fatherNameLabel')}:</span> {formData.fatherName}</div>
+                    <div><span className="font-semibold">{t('grandfatherNameLabel')}:</span> {formData.grandfatherName}</div>
+                    <div><span className="font-semibold">{t('tribeNameLabel')}:</span> {formData.tribeName}</div>
+                    <div><span className="font-semibold">{t('nationality')}:</span> {formData.nationality}</div>
+                    <div><span className="font-semibold">{t('dateOfBirth')}:</span> {formData.dateOfBirth}</div>
+                    <div><span className="font-semibold">{t('placeOfBirth')}:</span> {formData.placeOfBirth}</div>
+                    <div><span className="font-semibold">{t('gender')}:</span> {formData.gender === 'male' ? t('male') : t('female')}</div>
+                    <div><span className="font-semibold">{t('religionLabel')}:</span> {formData.religion}</div>
                     {formData.remarks && (
-                      <div className="md:col-span-2"><span className="font-semibold">ملاحظات:</span> {formData.remarks}</div>
+                      <div className="md:col-span-2"><span className="font-semibold">{t('remarksLabel')}:</span> {formData.remarks}</div>
                     )}
                   </div>
                 </div>
@@ -875,16 +875,16 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <Users className="w-6 h-6" />
-                    معلومات ولي الأمر (الأب)
+                    {t('fatherInfo')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">الاسم:</span> {formData.parentName}</div>
-                    <div><span className="font-semibold">رقم الهاتف:</span> {formData.mobileNumber}</div>
+                    <div><span className="font-semibold">{t('parentNameLabel')}:</span> {formData.parentName}</div>
+                    <div><span className="font-semibold">{t('phoneNumber')}:</span> {formData.mobileNumber}</div>
                     {formData.workMobileNumber && (
-                      <div><span className="font-semibold">رقم هاتف العمل:</span> {formData.workMobileNumber}</div>
+                      <div><span className="font-semibold">{t('workPhoneNumber')}:</span> {formData.workMobileNumber}</div>
                     )}
-                    <div><span className="font-semibold">المهنة:</span> {formData.job}</div>
-                    <div className="md:col-span-2"><span className="font-semibold">جهة العمل:</span> {formData.placeOfWork}</div>
+                    <div><span className="font-semibold">{t('occupation')}:</span> {formData.job}</div>
+                    <div className="md:col-span-2"><span className="font-semibold">{t('workplace')}:</span> {formData.placeOfWork}</div>
                   </div>
                 </div>
 
@@ -892,16 +892,16 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <Users className="w-6 h-6" />
-                    معلومات الأم
+                    {t('motherInfo')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">الاسم:</span> {formData.motherName}</div>
-                    <div><span className="font-semibold">رقم الهاتف:</span> {formData.motherMobileNumber}</div>
+                    <div><span className="font-semibold">{t('motherNameLabel')}:</span> {formData.motherName}</div>
+                    <div><span className="font-semibold">{t('phoneNumber')}:</span> {formData.motherMobileNumber}</div>
                     {formData.motherWorkMobileNumber && (
-                      <div><span className="font-semibold">رقم هاتف العمل:</span> {formData.motherWorkMobileNumber}</div>
+                      <div><span className="font-semibold">{t('workPhoneNumber')}:</span> {formData.motherWorkMobileNumber}</div>
                     )}
-                    <div><span className="font-semibold">المهنة:</span> {formData.motherJob}</div>
-                    <div className="md:col-span-2"><span className="font-semibold">جهة العمل:</span> {formData.motherPlaceOfWork}</div>
+                    <div><span className="font-semibold">{t('occupation')}:</span> {formData.motherJob}</div>
+                    <div className="md:col-span-2"><span className="font-semibold">{t('workplace')}:</span> {formData.motherPlaceOfWork}</div>
                   </div>
                 </div>
 
@@ -909,19 +909,19 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <Phone className="w-6 h-6" />
-                    معلومات قريب
+                    {t('relativeInfo')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">الاسم:</span> {formData.relativeName}</div>
-                    <div><span className="font-semibold">رقم الهاتف:</span> {formData.relativePhone}</div>
+                    <div><span className="font-semibold">{t('relativeNameLabel')}:</span> {formData.relativeName}</div>
+                    <div><span className="font-semibold">{t('relativePhoneLabel')}:</span> {formData.relativePhone}</div>
                   </div>
                 </div>
 
                 {/* Previous Education */}
                 {formData.previousSchool && (
                   <div className="bg-gray-50 p-6 rounded-lg">
-                    <h3 className="text-xl font-bold text-primary mb-4">التعليم السابق</h3>
-                    <div><span className="font-semibold">المدرسة السابقة:</span> {formData.previousSchool}</div>
+                    <h3 className="text-xl font-bold text-primary mb-4">{t('previousEducationTitle')}</h3>
+                    <div><span className="font-semibold">{t('previousSchool')}:</span> {formData.previousSchool}</div>
                   </div>
                 )}
 
@@ -929,14 +929,14 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <MapPin className="w-6 h-6" />
-                    بيانات النقل والمنزل
+                    {t('transportHomeTitle')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">المنطقة:</span> {formData.region}</div>
-                    <div><span className="font-semibold">رقم القرية:</span> {formData.villageNo}</div>
-                    <div><span className="font-semibold">رقم المنزل:</span> {formData.houseNumber}</div>
+                    <div><span className="font-semibold">{t('regionLabel')}:</span> {formData.region}</div>
+                    <div><span className="font-semibold">{t('villageNoLabel')}:</span> {formData.villageNo}</div>
+                    <div><span className="font-semibold">{t('houseNumberLabel')}:</span> {formData.houseNumber}</div>
                     {formData.siteDescription && (
-                      <div><span className="font-semibold">وصف الموقع:</span> {formData.siteDescription}</div>
+                      <div><span className="font-semibold">{t('siteDescriptionLabel')}:</span> {formData.siteDescription}</div>
                     )}
                   </div>
                 </div>
@@ -945,20 +945,20 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <Bus className="w-6 h-6" />
-                    النقل المدرسي
+                    {t('schoolTransportTitle')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div><span className="font-semibold">النقل المدرسي:</span> {formData.schoolTransport === 'yes' ? 'نعم' : 'لا'}</div>
+                    <div><span className="font-semibold">{t('schoolTransportLabel')}:</span> {formData.schoolTransport === 'yes' ? t('yes') : t('no')}</div>
                     {formData.schoolTransport === 'yes' && (
                       <>
                         {formData.transportationType && (
-                          <div><span className="font-semibold">نوع النقل:</span> {formData.transportationType}</div>
+                          <div><span className="font-semibold">{t('transportTypeLabel')}:</span> {formData.transportationType}</div>
                         )}
                         {formData.tripType && (
-                          <div><span className="font-semibold">نوع الرحلة:</span> {
-                            formData.tripType === 'twoWay' ? 'رحلة ذهاب وعودة' :
-                            formData.tripType === 'toSchool' ? 'إلى المدرسة فقط' :
-                            'من المدرسة فقط'
+                          <div><span className="font-semibold">{t('tripTypeLabel')}:</span> {
+                            formData.tripType === 'twoWay' ? t('tripTwoWay') :
+                            formData.tripType === 'toSchool' ? t('tripToSchool') :
+                            t('tripFromSchool')
                           }</div>
                         )}
                       </>
@@ -970,18 +970,18 @@ export default function AdmissionPage() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                     <FileText className="w-6 h-6" />
-                    المستندات المرفقة
+                    {t('documentsRequired')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     {Object.entries(files).map(([key, file]) => (
                       file && (
                         <div key={key} className="border rounded-lg p-4">
                           <p className="font-semibold mb-2">
-                            {key === 'birthCertificate' ? 'شهادة الميلاد' :
-                             key === 'vaccinationCard' ? 'بطاقة التطعيم' :
-                             key === 'passport' ? 'جواز السفر' :
-                             key === 'parentId' ? 'البطاقة الشخصية لولي الأمر' :
-                             'صورة للبيت'}
+                             {key === 'birthCertificate' ? t('birthCertificate') :
+                              key === 'vaccinationCard' ? t('vaccinationCard') :
+                              key === 'passport' ? t('passport') :
+                              key === 'parentId' ? t('parentId') :
+                              t('housePhoto')}
                           </p>
                           <p className="text-sm text-gray-600 mb-2">{file.name}</p>
                           {filePreviews[key] && (
@@ -1008,7 +1008,7 @@ export default function AdmissionPage() {
                   onClick={() => setShowPreview(false)}
                   className="px-8 py-3 rounded-lg font-bold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
                 >
-                  إغلاق
+                  {t('close')}
                 </button>
               </div>
             </motion.div>

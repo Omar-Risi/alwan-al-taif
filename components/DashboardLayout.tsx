@@ -17,6 +17,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { t, i18n } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isArabic = i18n.language === 'ar';
+  const isPrintView = pathname.includes('/dashboard/applications/') && pathname.endsWith('/download');
+
+  if (isPrintView) {
+    return <>{children}</>;
+  }
 
   const navItems = [
     { nameKey: 'dashboard', href: '/dashboard', icon: Home },

@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { 
   ArrowLeft, User, Users, Phone, MapPin, Bus, FileText, 
-  CheckCircle, XCircle, Clock, Download, Eye 
+  CheckCircle, XCircle, Clock, Download, Eye, Printer 
 } from "lucide-react";
 import Image from "next/image";
 
@@ -109,20 +109,20 @@ export default function AdmissionDetailsPage() {
       if (response.ok) {
         setAdmission({ ...admission, status: newStatus });
       } else {
-        alert('فشل تحديث الحالة');
+        alert(t('statusUpdateFailed'));
       }
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('حدث خطأ أثناء تحديث الحالة');
+      alert(t('statusUpdateError'));
     } finally {
       setUpdating(false);
     }
   };
 
   const statusConfig = {
-    pending: { label: "قيد المراجعة", color: "bg-yellow-100 text-yellow-800", icon: Clock },
-    approved: { label: "مقبول", color: "bg-green-100 text-green-800", icon: CheckCircle },
-    rejected: { label: "مرفوض", color: "bg-red-100 text-red-800", icon: XCircle }
+    pending: { label: t('applicationStatusPending'), color: "bg-yellow-100 text-yellow-800", icon: Clock },
+    approved: { label: t('applicationStatusApproved'), color: "bg-green-100 text-green-800", icon: CheckCircle },
+    rejected: { label: t('applicationStatusRejected'), color: "bg-red-100 text-red-800", icon: XCircle }
   };
 
   if (loading) {
@@ -130,7 +130,7 @@ export default function AdmissionDetailsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">جاري التحميل...</p>
+          <p className="text-gray-600 text-lg">{t('loading')}</p>
         </div>
       </div>
     );
@@ -140,12 +140,12 @@ export default function AdmissionDetailsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-xl text-gray-600 mb-4">الطلب غير موجود</p>
+          <p className="text-xl text-gray-600 mb-4">{t('admissionNotFound')}</p>
           <button
             onClick={() => router.push('/dashboard/applications')}
             className="text-primary hover:underline"
           >
-            العودة إلى قائمة الطلبات
+            {t('backToApplications')}
           </button>
         </div>
       </div>
@@ -164,17 +164,17 @@ export default function AdmissionDetailsPage() {
             className="flex items-center gap-2 text-primary hover:text-primary/80 mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
-            العودة إلى قائمة الطلبات
+            {t('backToApplications')}
           </button>
           
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  طلب التسجيل - {admission.student_name}
+                  {t('applicantTitle')} - {admission.student_name}
                 </h1>
                 <p className="text-gray-600">
-                  تاريخ التقديم: {new Date(admission.created_at).toLocaleDateString('ar-EG', {
+                  {t('submittedAt')}: {new Date(admission.created_at).toLocaleDateString('ar-EG', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -185,6 +185,14 @@ export default function AdmissionDetailsPage() {
               </div>
               
               <div className="flex items-center gap-3">
+                <button
+                  onClick={() => router.push(`/dashboard/applications/${admission.id}/download`)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary/10 transition-colors"
+                  title={t('printLabel')}
+                >
+                  <Printer className="w-5 h-5" />
+                  {t('printLabel')}
+                </button>
                 <div className={`px-4 py-2 rounded-full ${statusConfig[admission.status].color} flex items-center gap-2`}>
                   <StatusIcon className="w-5 h-5" />
                   <span className="font-semibold">{statusConfig[admission.status].label}</span>
@@ -201,7 +209,7 @@ export default function AdmissionDetailsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow-lg p-6 mb-6"
           >
-            <h3 className="text-lg font-bold text-gray-900 mb-4">إجراءات</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{t('actionsTitle')}</h3>
             <div className="flex gap-4">
               <button
                 onClick={() => handleStatusChange('approved')}
@@ -209,7 +217,7 @@ export default function AdmissionDetailsPage() {
                 className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold disabled:bg-gray-400 flex items-center justify-center gap-2"
               >
                 <CheckCircle className="w-5 h-5" />
-                قبول الطلب
+                {t('approveApplication')}
               </button>
               <button
                 onClick={() => handleStatusChange('rejected')}
@@ -217,7 +225,7 @@ export default function AdmissionDetailsPage() {
                 className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold disabled:bg-gray-400 flex items-center justify-center gap-2"
               >
                 <XCircle className="w-5 h-5" />
-                رفض الطلب
+                {t('rejectApplication')}
               </button>
             </div>
           </motion.div>
@@ -231,52 +239,52 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <User className="w-6 h-6" />
-            معلومات الطالب
+            {t('studentInfoDetails')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">الصف المتقدم له</p>
+              <p className="text-sm text-gray-600 mb-1">{t('gradeApplying')}</p>
               <p className="font-semibold text-lg">{admission.class_applying}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">اسم الطالب</p>
+              <p className="text-sm text-gray-600 mb-1">{t('studentNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.student_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">اسم الأب</p>
+              <p className="text-sm text-gray-600 mb-1">{t('fatherNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.father_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">اسم الجد</p>
+              <p className="text-sm text-gray-600 mb-1">{t('grandfatherNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.grandfather_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">اسم القبيلة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('tribeNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.tribe_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">الجنسية</p>
+              <p className="text-sm text-gray-600 mb-1">{t('nationality')}</p>
               <p className="font-semibold text-lg">{admission.nationality}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">تاريخ الميلاد</p>
+              <p className="text-sm text-gray-600 mb-1">{t('dateOfBirth')}</p>
               <p className="font-semibold text-lg">{admission.date_of_birth}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">مكان الميلاد</p>
+              <p className="text-sm text-gray-600 mb-1">{t('placeOfBirth')}</p>
               <p className="font-semibold text-lg">{admission.place_of_birth}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">الجنس</p>
-              <p className="font-semibold text-lg">{admission.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
+              <p className="text-sm text-gray-600 mb-1">{t('gender')}</p>
+              <p className="font-semibold text-lg">{admission.gender === 'male' ? t('male') : t('female')}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">الديانة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('religionLabel')}</p>
               <p className="font-semibold text-lg">{admission.religion}</p>
             </div>
             {admission.remarks && (
               <div className="md:col-span-3">
-                <p className="text-sm text-gray-600 mb-1">ملاحظات</p>
+                <p className="text-sm text-gray-600 mb-1">{t('remarksLabel')}</p>
                 <p className="font-semibold">{admission.remarks}</p>
               </div>
             )}
@@ -292,29 +300,29 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <Users className="w-6 h-6" />
-            معلومات ولي الأمر (الأب)
+            {t('fatherInfo')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">الاسم</p>
+              <p className="text-sm text-gray-600 mb-1">{t('parentNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.parent_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">رقم الهاتف</p>
+              <p className="text-sm text-gray-600 mb-1">{t('phoneNumber')}</p>
               <p className="font-semibold text-lg">{admission.mobile_number}</p>
             </div>
             {admission.work_mobile_number && (
               <div>
-                <p className="text-sm text-gray-600 mb-1">رقم هاتف العمل</p>
+                <p className="text-sm text-gray-600 mb-1">{t('workPhoneNumber')}</p>
                 <p className="font-semibold text-lg">{admission.work_mobile_number}</p>
               </div>
             )}
             <div>
-              <p className="text-sm text-gray-600 mb-1">المهنة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('occupation')}</p>
               <p className="font-semibold text-lg">{admission.job}</p>
             </div>
             <div className="md:col-span-2">
-              <p className="text-sm text-gray-600 mb-1">جهة العمل</p>
+              <p className="text-sm text-gray-600 mb-1">{t('workplace')}</p>
               <p className="font-semibold text-lg">{admission.place_of_work}</p>
             </div>
           </div>
@@ -329,29 +337,29 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <Users className="w-6 h-6" />
-            معلومات الأم
+            {t('motherInfo')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">الاسم</p>
+              <p className="text-sm text-gray-600 mb-1">{t('motherNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.mother_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">رقم الهاتف</p>
+              <p className="text-sm text-gray-600 mb-1">{t('phoneNumber')}</p>
               <p className="font-semibold text-lg">{admission.mother_mobile_number}</p>
             </div>
             {admission.mother_work_mobile_number && (
               <div>
-                <p className="text-sm text-gray-600 mb-1">رقم هاتف العمل</p>
+                <p className="text-sm text-gray-600 mb-1">{t('workPhoneNumber')}</p>
                 <p className="font-semibold text-lg">{admission.mother_work_mobile_number}</p>
               </div>
             )}
             <div>
-              <p className="text-sm text-gray-600 mb-1">المهنة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('occupation')}</p>
               <p className="font-semibold text-lg">{admission.mother_job}</p>
             </div>
             <div className="md:col-span-2">
-              <p className="text-sm text-gray-600 mb-1">جهة العمل</p>
+              <p className="text-sm text-gray-600 mb-1">{t('workplace')}</p>
               <p className="font-semibold text-lg">{admission.mother_place_of_work}</p>
             </div>
           </div>
@@ -366,15 +374,15 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <Phone className="w-6 h-6" />
-            معلومات قريب
+            {t('relativeInfo')}
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">الاسم</p>
+              <p className="text-sm text-gray-600 mb-1">{t('relativeNameLabel')}</p>
               <p className="font-semibold text-lg">{admission.relative_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">رقم الهاتف</p>
+              <p className="text-sm text-gray-600 mb-1">{t('relativePhoneLabel')}</p>
               <p className="font-semibold text-lg">{admission.relative_phone}</p>
             </div>
           </div>
@@ -388,9 +396,9 @@ export default function AdmissionDetailsPage() {
             transition={{ delay: 0.4 }}
             className="bg-white rounded-2xl shadow-lg p-6 mb-6"
           >
-            <h2 className="text-2xl font-bold text-primary mb-6">التعليم السابق</h2>
+            <h2 className="text-2xl font-bold text-primary mb-6">{t('previousEducationTitle')}</h2>
             <div>
-              <p className="text-sm text-gray-600 mb-1">المدرسة السابقة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('previousSchool')}</p>
               <p className="font-semibold text-lg">{admission.previous_school}</p>
             </div>
           </motion.div>
@@ -405,24 +413,24 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <MapPin className="w-6 h-6" />
-            بيانات النقل والمنزل
+            {t('transportHomeTitle')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">المنطقة</p>
+              <p className="text-sm text-gray-600 mb-1">{t('regionLabel')}</p>
               <p className="font-semibold text-lg">{admission.region}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">رقم القرية</p>
+              <p className="text-sm text-gray-600 mb-1">{t('villageNoLabel')}</p>
               <p className="font-semibold text-lg">{admission.village_no}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">رقم المنزل</p>
+              <p className="text-sm text-gray-600 mb-1">{t('houseNumberLabel')}</p>
               <p className="font-semibold text-lg">{admission.house_number}</p>
             </div>
             {admission.site_description && (
               <div className="md:col-span-3">
-                <p className="text-sm text-gray-600 mb-1">وصف الموقع</p>
+                <p className="text-sm text-gray-600 mb-1">{t('siteDescriptionLabel')}</p>
                 <p className="font-semibold">{admission.site_description}</p>
               </div>
             )}
@@ -438,28 +446,28 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <Bus className="w-6 h-6" />
-            النقل المدرسي
+            {t('schoolTransportTitle')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">النقل المدرسي</p>
-              <p className="font-semibold text-lg">{admission.school_transport === 'yes' ? 'نعم' : 'لا'}</p>
+              <p className="text-sm text-gray-600 mb-1">{t('schoolTransportLabel')}</p>
+              <p className="font-semibold text-lg">{admission.school_transport === 'yes' ? t('yes') : t('no')}</p>
             </div>
             {admission.school_transport === 'yes' && (
               <>
                 {admission.transportation_type && (
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">نوع النقل</p>
+                    <p className="text-sm text-gray-600 mb-1">{t('transportTypeLabel')}</p>
                     <p className="font-semibold text-lg">{admission.transportation_type}</p>
                   </div>
                 )}
                 {admission.trip_type && (
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">نوع الرحلة</p>
+                    <p className="text-sm text-gray-600 mb-1">{t('tripTypeLabel')}</p>
                     <p className="font-semibold text-lg">
-                      {admission.trip_type === 'twoWay' ? 'رحلة ذهاب وعودة' :
-                       admission.trip_type === 'toSchool' ? 'إلى المدرسة فقط' :
-                       'من المدرسة فقط'}
+                      {admission.trip_type === 'twoWay' ? t('tripTwoWay') :
+                       admission.trip_type === 'toSchool' ? t('tripToSchool') :
+                       t('tripFromSchool')}
                     </p>
                   </div>
                 )}
@@ -477,15 +485,15 @@ export default function AdmissionDetailsPage() {
         >
           <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
             <FileText className="w-6 h-6" />
-            المستندات المرفقة
+            {t('attachedDocuments')}
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { key: 'birth_certificate_url', label: 'شهادة الميلاد' },
-              { key: 'vaccination_card_url', label: 'بطاقة التطعيم' },
-              { key: 'passport_url', label: 'جواز السفر' },
-              { key: 'parent_id_url', label: 'البطاقة الشخصية لولي الأمر' },
-              { key: 'house_photo_url', label: 'صورة للبيت' }
+              { key: 'birth_certificate_url', label: t('birthCertificate') },
+              { key: 'vaccination_card_url', label: t('vaccinationCard') },
+              { key: 'passport_url', label: t('passport') },
+              { key: 'parent_id_url', label: t('parentId') },
+              { key: 'house_photo_url', label: t('housePhoto') }
             ].map(({ key, label }) => {
               const url = admission[key as keyof AdmissionDetails] as string;
               return url ? (
@@ -507,7 +515,7 @@ export default function AdmissionDetailsPage() {
                       className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-center text-sm flex items-center justify-center gap-2"
                     >
                       <Eye className="w-4 h-4" />
-                      عرض
+                      {t('viewDocument')}
                     </a>
                     <a
                       href={url}
@@ -515,7 +523,7 @@ export default function AdmissionDetailsPage() {
                       className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-center text-sm flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      تحميل
+                      {t('downloadDocument')}
                     </a>
                   </div>
                 </div>
