@@ -21,12 +21,6 @@ interface Application {
 
 
 
-const statusLabels: Record<string, string> = {
-  pending: "قيد المراجعة",
-  approved: "مقبول",
-  rejected: "مرفوض"
-};
-
 const statusColors: Record<string, string> = {
   pending: "bg-yellow-100 text-yellow-800",
   approved: "bg-green-100 text-green-800",
@@ -42,6 +36,11 @@ const statusIcons: Record<string, any> = {
 export default function ApplicationsPage() {
   const router = useRouter();
   const { t } = useTranslation();
+    const statusLabels: Record<string, string> = {
+      pending: t('pending'),
+      approved: t('approved'),
+      rejected: t('rejected')
+    };
   const [applications, setApplications] = useState<Application[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
@@ -97,11 +96,11 @@ export default function ApplicationsPage() {
           app.id === id ? { ...app, status: newStatus } : app
         ));
       } else {
-        alert('فشل تحديث الحالة');
+        alert(t('statusUpdateFailed'));
       }
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('حدث خطأ أثناء تحديث الحالة');
+      alert(t('statusUpdateError'));
     }
   };
 
@@ -119,7 +118,7 @@ export default function ApplicationsPage() {
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="البحث عن طالب أو ولي أمر..."
+              placeholder={t('searchStudent')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -159,7 +158,7 @@ export default function ApplicationsPage() {
         <div className="bg-green-50 rounded-lg p-6 border-r-4 border-green-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-green-800 font-semibold mb-1">مقبول</p>
+              <p className="text-green-800 font-semibold mb-1">{t('approvedApplications')}</p>
               <p className="text-3xl font-bold text-green-900">
                 {applications.filter(a => a.status === "approved").length}
               </p>
@@ -171,7 +170,7 @@ export default function ApplicationsPage() {
         <div className="bg-red-50 rounded-lg p-6 border-r-4 border-red-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-red-800 font-semibold mb-1">مرفوض</p>
+              <p className="text-red-800 font-semibold mb-1">{t('rejectedApplications')}</p>
               <p className="text-3xl font-bold text-red-900">
                 {applications.filter(a => a.status === "rejected").length}
               </p>
@@ -187,13 +186,13 @@ export default function ApplicationsPage() {
           <table className="w-full">
             <thead className="bg-primary/10">
               <tr>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">اسم الطالب</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">الصف</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">ولي الأمر</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">رقم الهاتف</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">تاريخ التقديم</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">الحالة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-primary">الإجراءات</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('studentName')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('grade')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('parent')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('phoneNumber')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('submissionDate')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('status')}</th>
+                <th className="px-6 py-4 text-left  rtl:text-right text-sm font-semibold text-primary">{t('actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -233,7 +232,7 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => router.push(`/dashboard/applications/${app.id}`)}
                           className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                          title="عرض التفاصيل"
+                          title={t('viewDetails')}
                         >
                           <Eye className="w-5 h-5" />
                         </button>
@@ -241,7 +240,7 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => router.push(`/dashboard/applications/${app.id}/download`)}
                           className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                          title="طباعة"
+                          title={t('printLabel')}
                         >
                           <Printer className="w-5 h-5" />
                         </button>
@@ -249,21 +248,21 @@ export default function ApplicationsPage() {
                         <button
                           onClick={() => handleStatusChange(app.id, "pending")}
                           className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
-                          title="قيد المراجعة"
+                          title={t('pending')}
                         >
                           <Clock className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => handleStatusChange(app.id, "approved")}
                           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                          title="قبول"
+                          title={t('approved')}
                         >
                           <CheckCircle className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => handleStatusChange(app.id, "rejected")}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="رفض"
+                          title={t('rejected')}
                         >
                           <XCircle className="w-5 h-5" />
                         </button>
@@ -279,7 +278,7 @@ export default function ApplicationsPage() {
         {filteredApplications.length === 0 && (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">لا توجد طلبات مطابقة للبحث</p>
+            <p className="text-gray-500 text-lg">{t('noApplicationsFoundText')}</p>
           </div>
         )}
       </div>
@@ -289,7 +288,7 @@ export default function ApplicationsPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-primary">تفاصيل الطلب</h2>
+              <h2 className="text-2xl font-bold text-primary">{t('applicationDetails')}</h2>
               <button
                 onClick={() => setSelectedApplication(null)}
                 className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -301,22 +300,22 @@ export default function ApplicationsPage() {
             <div className="p-6 space-y-6">
               {/* Child Information */}
               <div>
-                <h3 className="text-lg font-bold text-primary mb-3">معلومات الطالب</h3>
+                <h3 className="text-lg font-bold text-primary mb-3">{t('studentInfoDetails')}</h3>
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
-                    <p className="text-sm text-gray-600">اسم الطالب</p>
+                    <p className="text-sm text-gray-600">{t('studentName')}</p>
                     <p className="font-semibold">{selectedApplication.student_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">اسم الأب</p>
+                    <p className="text-sm text-gray-600">{t('fatherName')}</p>
                     <p className="font-semibold">{selectedApplication.father_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">تاريخ الميلاد</p>
+                    <p className="text-sm text-gray-600">{t('dateOfBirth')}</p>
                     <p className="font-semibold">{selectedApplication.date_of_birth}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">الصف المتقدم له</p>
+                    <p className="text-sm text-gray-600">{t('gradeApplying')}</p>
                     <p className="font-semibold">{selectedApplication.class_applying}</p>
                   </div>
                 </div>
@@ -324,18 +323,18 @@ export default function ApplicationsPage() {
 
               {/* Father Information */}
               <div>
-                <h3 className="text-lg font-bold text-primary mb-3">معلومات الأب</h3>
+                <h3 className="text-lg font-bold text-primary mb-3">{t('fatherInfoDetails')}</h3>
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
-                    <p className="text-sm text-gray-600">الاسم</p>
+                    <p className="text-sm text-gray-600">{t('parentNameLabel')}</p>
                     <p className="font-semibold">{selectedApplication.parent_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">رقم الهاتف</p>
+                    <p className="text-sm text-gray-600">{t('phoneNumber')}</p>
                     <p className="font-semibold">{selectedApplication.mobile_number}</p>
                   </div>
                   <div className="md:col-span-2">
-                    <p className="text-sm text-gray-600">المهنة</p>
+                    <p className="text-sm text-gray-600">{t('occupation')}</p>
                     <p className="font-semibold">{selectedApplication.job}</p>
                   </div>
                 </div>
@@ -343,14 +342,14 @@ export default function ApplicationsPage() {
 
               {/* Mother Information */}
               <div>
-                <h3 className="text-lg font-bold text-primary mb-3">معلومات الأم</h3>
+                <h3 className="text-lg font-bold text-primary mb-3">{t('motherInfo')}</h3>
                 <div className="grid md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
                   <div>
-                    <p className="text-sm text-gray-600">الاسم</p>
+                    <p className="text-sm text-gray-600">{t('motherNameLabel')}</p>
                     <p className="font-semibold">{selectedApplication.mother_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">رقم الهاتف</p>
+                    <p className="text-sm text-gray-600">{t('phoneNumber')}</p>
                     <p className="font-semibold">{selectedApplication.mother_mobile_number}</p>
                   </div>
                 </div>
@@ -359,7 +358,7 @@ export default function ApplicationsPage() {
               {/* Status and Actions */}
               <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">الحالة الحالية</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('currentStatus')}</p>
                   <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${statusColors[selectedApplication.status]}`}>
                     {statusLabels[selectedApplication.status]}
                   </span>
@@ -372,7 +371,7 @@ export default function ApplicationsPage() {
                     }}
                     className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-semibold"
                   >
-                    قيد المراجعة
+                    {t('pending')}
                   </button>
                   <button
                     onClick={() => {
@@ -381,7 +380,7 @@ export default function ApplicationsPage() {
                     }}
                     className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
                   >
-                    قبول الطلب
+                    {t('approveApplication')}
                   </button>
                   <button
                     onClick={() => {
@@ -390,7 +389,7 @@ export default function ApplicationsPage() {
                     }}
                     className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
                   >
-                    رفض الطلب
+                    {t('rejectApplication')}
                   </button>
                 </div>
               </div>
