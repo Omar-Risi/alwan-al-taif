@@ -1,8 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Printer, ArrowLeft } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 interface AdmissionDetails {
   id: string;
@@ -77,13 +75,19 @@ const SectionHeader = ({ ar, en }: { ar: string, en: string }) => (
 export default function DownloadAdmissionPage() {
   const router = useRouter();
   const params = useParams();
-  const { t } = useTranslation();
   const [admission, setAdmission] = useState<AdmissionDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchAdmission();
   }, [params.id]);
+
+  useEffect(() => {
+    if (!loading && admission) {
+      const timer = setTimeout(() => window.print(), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, admission]);
 
   const fetchAdmission = async () => {
     try {
@@ -97,10 +101,6 @@ export default function DownloadAdmissionPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handlePrint = () => {
-    window.print();
   };
 
   if (loading) {
@@ -132,24 +132,6 @@ export default function DownloadAdmissionPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 print:bg-white print:py-0 print:px-0" dir="rtl">
-      {/* Non-printable controls */}
-      <div className="max-w-[210mm] mx-auto mb-6 flex justify-between items-center print:hidden">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-700 hover:text-gray-900 bg-white px-5 py-2.5 rounded-lg shadow-sm border font-medium"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          {t('back')}
-        </button>
-        <button
-          onClick={handlePrint}
-          className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg shadow-md hover:bg-primary/90 font-semibold"
-        >
-          <Printer className="w-5 h-5" />
-          {t('print')}
-        </button>
-      </div>
-
       {/* Printable A4 Page */}
       <div className="max-w-[210mm] min-h-[297mm] mx-auto bg-white p-12 shadow-lg print:shadow-none text-black">
         {/* Header */}

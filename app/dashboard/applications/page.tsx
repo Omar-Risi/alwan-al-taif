@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Search, Filter, Eye, Download, CheckCircle, XCircle, Clock, FileText } from "lucide-react";
+import { Search, Filter, Eye, Download, CheckCircle, XCircle, Clock, FileText, Printer } from "lucide-react";
 
 interface Application {
   id: string;
@@ -236,6 +236,14 @@ export default function ApplicationsPage() {
                           title="عرض التفاصيل"
                         >
                           <Eye className="w-5 h-5" />
+                        </button>
+
+                        <button
+                          onClick={() => router.push(`/dashboard/applications/${app.id}/download`)}
+                          className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                          title="طباعة"
+                        >
+                          <Printer className="w-5 h-5" />
                         </button>
 
                         <button

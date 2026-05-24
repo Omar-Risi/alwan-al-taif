@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { 
   ArrowLeft, User, Users, Phone, MapPin, Bus, FileText, 
-  CheckCircle, XCircle, Clock, Download, Eye 
+  CheckCircle, XCircle, Clock, Download, Eye, Printer 
 } from "lucide-react";
 import Image from "next/image";
 
@@ -185,6 +185,14 @@ export default function AdmissionDetailsPage() {
               </div>
               
               <div className="flex items-center gap-3">
+                <button
+                  onClick={() => router.push(`/dashboard/applications/${admission.id}/download`)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary/10 transition-colors"
+                  title="طباعة"
+                >
+                  <Printer className="w-5 h-5" />
+                  طباعة
+                </button>
                 <div className={`px-4 py-2 rounded-full ${statusConfig[admission.status].color} flex items-center gap-2`}>
                   <StatusIcon className="w-5 h-5" />
                   <span className="font-semibold">{statusConfig[admission.status].label}</span>
