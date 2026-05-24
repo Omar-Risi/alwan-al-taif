@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Printer, ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface AdmissionDetails {
   id: string;
@@ -76,6 +77,7 @@ const SectionHeader = ({ ar, en }: { ar: string, en: string }) => (
 export default function DownloadAdmissionPage() {
   const router = useRouter();
   const params = useParams();
+  const { t } = useTranslation();
   const [admission, setAdmission] = useState<AdmissionDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -137,14 +139,14 @@ export default function DownloadAdmissionPage() {
           className="flex items-center gap-2 text-gray-700 hover:text-gray-900 bg-white px-5 py-2.5 rounded-lg shadow-sm border font-medium"
         >
           <ArrowLeft className="w-5 h-5" />
-          العودة / Back
+          {t('back')}
         </button>
         <button
           onClick={handlePrint}
           className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg shadow-md hover:bg-primary/90 font-semibold"
         >
           <Printer className="w-5 h-5" />
-          طباعة / Print
+          {t('print')}
         </button>
       </div>
 
