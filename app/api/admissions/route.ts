@@ -8,112 +8,62 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    
-    console.log('Received form data');
-    
-    // Extract form fields
-    const data = {
+    const body = await request.json();
+
+    const finalData = {
       // Student Information
-      class_applying: formData.get('classApplying'),
-      student_name: formData.get('studentName'),
-      father_name: formData.get('fatherName'),
-      grandfather_name: formData.get('grandfatherName'),
-      tribe_name: formData.get('tribeName'),
-      nationality: formData.get('nationality'),
-      date_of_birth: formData.get('dateOfBirth'),
-      place_of_birth: formData.get('placeOfBirth'),
-      gender: formData.get('gender'),
-      religion: formData.get('religion'),
-      remarks: formData.get('remarks'),
-      
+      class_applying: body.classApplying,
+      student_name: body.studentName,
+      father_name: body.fatherName,
+      grandfather_name: body.grandfatherName,
+      tribe_name: body.tribeName,
+      nationality: body.nationality,
+      date_of_birth: body.dateOfBirth,
+      place_of_birth: body.placeOfBirth,
+      gender: body.gender,
+      religion: body.religion,
+      remarks: body.remarks || null,
+
       // Father Information
-      parent_name: formData.get('parentName'),
-      mobile_number: formData.get('mobileNumber'),
-      work_mobile_number: formData.get('workMobileNumber'),
-      job: formData.get('job'),
-      place_of_work: formData.get('placeOfWork'),
-      
+      parent_name: body.parentName,
+      mobile_number: body.mobileNumber,
+      work_mobile_number: body.workMobileNumber || null,
+      job: body.job,
+      place_of_work: body.placeOfWork,
+
       // Mother Information
-      mother_name: formData.get('motherName'),
-      mother_mobile_number: formData.get('motherMobileNumber'),
-      mother_work_mobile_number: formData.get('motherWorkMobileNumber'),
-      mother_job: formData.get('motherJob'),
-      mother_place_of_work: formData.get('motherPlaceOfWork'),
-      
+      mother_name: body.motherName,
+      mother_mobile_number: body.motherMobileNumber,
+      mother_work_mobile_number: body.motherWorkMobileNumber || null,
+      mother_job: body.motherJob,
+      mother_place_of_work: body.motherPlaceOfWork,
+
       // Relative Information
-      relative_name: formData.get('relativeName'),
-      relative_phone: formData.get('relativePhone'),
-      
+      relative_name: body.relativeName,
+      relative_phone: body.relativePhone,
+
       // Previous Education
-      previous_school: formData.get('previousSchool'),
-      
+      previous_school: body.previousSchool || null,
+
       // Transport and Home Data
-      region: formData.get('region'),
-      village_no: formData.get('villageNo'),
-      house_number: formData.get('houseNumber'),
-      site_description: formData.get('siteDescription'),
-      school_transport: formData.get('schoolTransport'),
-      transportation_type: formData.get('transportationType'),
-      trip_type: formData.get('tripType'),
-      
+      region: body.region,
+      village_no: body.villageNo,
+      house_number: body.houseNumber,
+      site_description: body.siteDescription || null,
+      school_transport: body.schoolTransport,
+      transportation_type: body.transportationType || null,
+      trip_type: body.tripType || null,
+
+      // File URLs (uploaded directly from client to Supabase Storage)
+      birth_certificate_url: body.birthCertificateUrl || null,
+      vaccination_card_url: body.vaccinationCardUrl || null,
+      passport_url: body.passportUrl || null,
+      parent_id_url: body.parentIdUrl || null,
+      house_photo_url: body.housePhotoUrl || null,
+
       status: 'pending',
     };
 
-    // Handle file uploads
-    const fileFields = ['birthCertificate', 'vaccinationCard', 'passport', 'parentId', 'housePhoto'];
-    const uploadedFiles: any = {};
-
-    // Upload files to Supabase Storage
-    for (const fieldName of fileFields) {
-      const file = formData.get(fieldName);
-      
-      if (file && file instanceof File && file.size > 0) {
-        try {
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-          const filePath = `admissions/${fileName}`;
-
-          // Convert File to ArrayBuffer
-          const arrayBuffer = await file.arrayBuffer();
-          const buffer = Buffer.from(arrayBuffer);
-
-          const { error: uploadError } = await supabase.storage
-            .from('documents')
-            .upload(filePath, buffer, {
-              contentType: file.type,
-              upsert: false
-            });
-
-          if (uploadError) {
-            console.error(`Error uploading ${fieldName}:`, uploadError);
-            continue;
-          }
-
-          const { data: { publicUrl } } = supabase.storage
-            .from('documents')
-            .getPublicUrl(filePath);
-
-          uploadedFiles[fieldName] = publicUrl;
-        } catch (uploadErr) {
-          console.error(`Error processing ${fieldName}:`, uploadErr);
-        }
-      }
-    }
-
-    // Add file URLs to data
-    const finalData = {
-      ...data,
-      birth_certificate_url: uploadedFiles.birthCertificate || null,
-      vaccination_card_url: uploadedFiles.vaccinationCard || null,
-      passport_url: uploadedFiles.passport || null,
-      parent_id_url: uploadedFiles.parentId || null,
-      house_photo_url: uploadedFiles.housePhoto || null,
-    };
-
-    console.log('Attempting to insert data:', finalData);
-
-    // Insert into database
     const { data: insertedData, error: insertError } = await supabase
       .from('admissions')
       .insert([finalData])
@@ -122,7 +72,6 @@ export async function POST(request: NextRequest) {
 
     if (insertError) {
       console.error('Database insert error:', insertError);
-      console.error('Error details:', JSON.stringify(insertError, null, 2));
       return NextResponse.json(
         { error: 'Failed to submit application', details: insertError.message, hint: insertError.hint },
         { status: 500 }

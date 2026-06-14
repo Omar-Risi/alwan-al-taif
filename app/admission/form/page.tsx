@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { User, Users, MapPin, Phone, Bus, FileText, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { createClient } from "@supabase/supabase-js";
 
 export default function AdmissionPage() {
   const router = useRouter();
@@ -100,41 +101,67 @@ export default function AdmissionPage() {
     setSubmitting(true);
 
     try {
-      const formDataToSend = new FormData();
-      
-      // Append all form fields
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
 
-      // Append files
-      Object.entries(files).forEach(([key, file]) => {
+      // Upload each file directly to Supabase Storage (bypasses Vercel 4.5MB limit)
+      const uploadedUrls: Record<string, string | null> = {};
+      for (const [fieldName, file] of Object.entries(files)) {
         if (file) {
-          formDataToSend.append(key, file);
-        }
-      });
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+          const filePath = `admissions/${fileName}`;
 
-      console.log('Submitting form...');
-      
+          const arrayBuffer = await file.arrayBuffer();
+          const { error: uploadError } = await supabase.storage
+            .from('documents')
+            .upload(filePath, arrayBuffer, { contentType: file.type, upsert: false });
+
+          if (uploadError) {
+            throw new Error(`Failed to upload ${fieldName}: ${uploadError.message}`);
+          }
+
+          const { data: { publicUrl } } = supabase.storage
+            .from('documents')
+            .getPublicUrl(filePath);
+
+          uploadedUrls[fieldName] = publicUrl;
+        } else {
+          uploadedUrls[fieldName] = null;
+        }
+      }
+
+      // Submit form data as JSON with file URLs (tiny request, no Vercel limit issue)
       const response = await fetch('/api/admissions', {
         method: 'POST',
-        body: formDataToSend,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          birthCertificateUrl: uploadedUrls.birthCertificate,
+          vaccinationCardUrl: uploadedUrls.vaccinationCard,
+          passportUrl: uploadedUrls.passport,
+          parentIdUrl: uploadedUrls.parentId,
+          housePhotoUrl: uploadedUrls.housePhoto,
+        }),
       });
 
-      const result = await response.json();
-      console.log('Response:', result);
+      let result;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        throw new Error(text || 'Server error');
+      }
 
       if (!response.ok) {
-        console.error('Server error:', result);
         throw new Error(result.details || result.error || 'Failed to submit application');
       }
 
       setSubmitted(true);
-      
-      // Redirect after 3 seconds
-      setTimeout(() => {
-        router.push('/');
-      }, 3000);
+      setTimeout(() => { router.push('/'); }, 3000);
     } catch (error: any) {
       console.error('Error submitting application:', error);
       alert(t('submissionError', { message: error.message }));

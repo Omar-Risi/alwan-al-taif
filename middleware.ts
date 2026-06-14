@@ -3,20 +3,23 @@ import type { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get('sb-access-token')?.value;
-  const refreshToken = request.cookies.get('sb-refresh-token')?.value;
   const { pathname } = request.nextUrl;
+  const accessToken = request.cookies.get('sb-access-token')?.value;
 
-  console.log('Middleware:', { pathname, hasAccessToken: !!accessToken });
+  // Block non-GET/HEAD requests to page routes (prevents bot POST floods causing 500s)
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new NextResponse('Method Not Allowed', {
+      status: 405,
+      headers: { Allow: 'GET, HEAD' },
+    });
+  }
 
   // Protected routes
   if (pathname.startsWith('/dashboard')) {
     if (!accessToken) {
-      console.log('No access token, redirecting to login');
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    // Verify token with Supabase
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -25,14 +28,11 @@ export async function middleware(request: NextRequest) {
     const { data: { user }, error } = await supabase.auth.getUser(accessToken);
 
     if (error || !user) {
-      console.log('Invalid token, redirecting to login');
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('sb-access-token');
       response.cookies.delete('sb-refresh-token');
       return response;
     }
-
-    console.log('User authenticated:', user.email);
   }
 
   // Redirect to dashboard if already logged in
@@ -43,9 +43,8 @@ export async function middleware(request: NextRequest) {
     );
 
     const { data: { user } } = await supabase.auth.getUser(accessToken);
-    
+
     if (user) {
-      console.log('Already logged in, redirecting to dashboard');
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
@@ -54,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
