@@ -110,14 +110,20 @@ export default function AdmissionPage() {
       const uploadedUrls: Record<string, string | null> = {};
       for (const [fieldName, file] of Object.entries(files)) {
         if (file) {
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+          // Only treat the trailing segment as an extension if there really is one.
+          const dotIndex = file.name.lastIndexOf('.');
+          const fileExt = dotIndex > 0 ? file.name.slice(dotIndex + 1).toLowerCase() : 'bin';
+          const suffix = Math.random().toString(36).slice(2, 10).padEnd(8, '0');
+          const fileName = `${Date.now()}-${suffix}.${fileExt}`;
           const filePath = `admissions/${fileName}`;
 
           const arrayBuffer = await file.arrayBuffer();
           const { error: uploadError } = await supabase.storage
             .from('documents')
-            .upload(filePath, arrayBuffer, { contentType: file.type, upsert: false });
+            .upload(filePath, arrayBuffer, {
+              contentType: file.type || 'application/octet-stream',
+              upsert: false,
+            });
 
           if (uploadError) {
             throw new Error(`Failed to upload ${fieldName}: ${uploadError.message}`);
